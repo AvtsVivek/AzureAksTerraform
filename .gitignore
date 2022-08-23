@@ -1,15 +1,50 @@
-/ADDITIONAL-TOPICS
-/FUTURE-TOPICS
-#.gitignore
+#  Local .terraform directories
+**/.terraform/*
 
-# macOS Files
-.DS_Store
-
-# Ignore .sh files
-#*.sh
-
-# Terraform Files and Folders
-.terraform
+# Why should note the tfstate files be put in VC
+# https://stackoverflow.com/q/38486335/1977871
+# .tfstate files
 *.tfstate
-*.tfstate.backup
-*.tfvars
+*.tfstate.*
+
+# Why should the .tfvars file should be ignored? Not sure.
+# Ok, Now I know a little. secrets.tfvars files should not be checked in. 
+# The should hold the secret values. 
+# For now, I am commenting this out.
+# .tfvars files
+# *.tfvars
+
+# .tfplan files
+*.tfplan
+
+# .pem files
+*.pem
+
+# .pem files
+*.pub
+
+# .pem files
+*.pub
+
+ssh-keys/
+
+# .hcl files from Terraform v0.14 and newer
+*.hcl
+# .terraform.lock.hcl must be included in the version control. But the following does not work.
+# I raised a question on SO. https://stackoverflow.com/q/69954822/1977871
+!.terraform.lock.hcl
+!sentinel.hcl
+# working directory for web app
+/globo_web_app/*
+
+**/next-step.txt
+
+provisioner-output.txt
+
+local-exec-output-files/*
+
+local-exec-output-files/
+
+*.log
+
+terraformdemo-dev.sshkeys
