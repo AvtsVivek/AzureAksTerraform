@@ -210,14 +210,14 @@ set AKS_WINDOWS_NODE_PASSWORD="P@ssw0rd123456"
 echo %AKS_WINDOWS_NODE_USERNAME%, %AKS_WINDOWS_NODE_PASSWORD%
 
 # Set Cluster Name
-set AKS_CLUSTER=aksprod1
-echo %AKS_CLUSTER%
+set AKS_CLUSTER_NAME=aksprod1
+echo %AKS_CLUSTER_NAME%
 
 az aks list
 
 # Now hold your breaths for the final count down.
 az aks create --resource-group %AKS_RESOURCE_GROUP% ^
-              --name %AKS_CLUSTER% ^
+              --name %AKS_CLUSTER_NAME% ^
               --enable-managed-identity ^
               --ssh-key-value  %AKS_SSH_KEY_LOCATION% ^
               --admin-username aksnodeadmin ^
@@ -245,6 +245,71 @@ az aks create --resource-group %AKS_RESOURCE_GROUP% ^
               --enable-ahub ^
               --zones 3
 
+az aks show --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER%
+
+az aks show --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER% --query id
+
+az aks show --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER% --query servicePrincipalProfile
+
+@FOR /f "delims=" %i in ('az aks show --resource-group %AKS_RESOURCE_GROUP% ^
+              --name %AKS_CLUSTER% ^
+              --query id --output tsv') DO set AKS_ID=%i
+
+echo %AKS_ID%
+
+az aks get-credentials --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER_NAME%
+
+# If you want to logout or unset, use the following.
+kubectl config unset current-context
+
+kubectl get nodes
+
+# When asked, use the following creds
+# --user-principal-name aksadmin1@vivek7dm1outlook.onmicrosoft.com ^
+# --password @AKSDemo123 ^
+
+kubectl cluster-info
+
+az aks nodepool list
+
+# List Node Pools
+az aks nodepool list --cluster-name %AKS_CLUSTER_NAME% --resource-group %AKS_RESOURCE_GROUP% -o table
+
+# List which pods are running in system nodepool from kube-system namespace
+kubectl get pod -o=custom-columns=NODE-NAME:.spec.nodeName,POD-NAME:.metadata.name -n kube-system
+
+# A successful cluster creation using managed identities contains this service principal profile information:
+az aks show --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER% --query servicePrincipalProfile
+
+# If the aks cluster is in a different resource group than vnet, then you have to do step [11 and 12 of this page](https://github.com/stacksimplify/azure-aks-kubernetes-masterclass/tree/master/23-AKS-Production-Grade-Cluster-Design-using-az-aks-cli/23-01-Create-AKSCluster-with-az-aks-cli).
+# Not clear, need to find out.
+
+# Enable Virtual Nodes on our AKS Cluster
+# Enable Virtual Nodes Add-On on our AKS Cluster
+
+# Verify Environment Variables
+echo %AKS_CLUSTER%, %AKS_VNET_SUBNET_VIRTUALNODES%
+
+# Enable Virtual Nodes on AKS Cluster
+az aks enable-addons ^
+    --resource-group %AKS_RESOURCE_GROUP% ^
+    --name %AKS_CLUSTER% ^
+    --addons virtual-node ^
+    --subnet-name %AKS_VNET_SUBNET_VIRTUALNODES%
+
+# Get pods
+kubectl get pods -n kube-system
+
+# Observe the output. You will see the aci-connector-linux-686f8748cc-7fld5 pod is not able to start.
+# So look at the logs. Ensure you have the connect pod name below
+kubectl logs -f aci-connector-linux-686f8748cc-7fld5 -n kube-system
+
+# Stoped from 163 Step-09_ Create Virtual Nodes and Fix ACI Connector Issues related to Access.mp4
+
+# List Nodes
+kubectl get nodes   
+
+# When its time to delete, you can run the following comands.
 az group delete --name %AKS_RESOURCE_GROUP% --yes
 
 az group delete --name NetworkWatcherRG 
