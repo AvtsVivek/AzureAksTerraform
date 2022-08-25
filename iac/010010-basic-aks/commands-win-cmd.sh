@@ -1,6 +1,8 @@
 
 cd ../..
 
+# Run the following commands in Windows CMD only. 
+
 # cd into the directory.
 cd ./iac/010010-basic-aks
 
@@ -88,8 +90,8 @@ az ad group create --display-name aksadmins --mail-nickname %AKS_AD_AKSADMIN_GRO
 az ad group show --group %AKS_AD_AKSADMIN_GROUP_NAME% --query id -o tsv
 az ad group list
 
-# Just in case if you want to delete
-az ad group delete --group %AKS_AD_AKSADMIN_GROUP_NAME%
+# Just in case if you want to delete use the following
+# az ad group delete --group %AKS_AD_AKSADMIN_GROUP_NAME%
 
 az ad group list
 
@@ -119,12 +121,11 @@ az ad user list
 echo %AKS_AD_AKSADMIN1_USER_OBJECT_ID%
 
 # If you wnat to delete. Get the id first
-az ad user delete --id &AKS_AD_AKSADMIN1_USER_OBJECT_ID&
+# az ad user delete --id &AKS_AD_AKSADMIN1_USER_OBJECT_ID&
 
 az ad user list
 
 echo %AKS_AD_AKSADMIN1_USER_OBJECT_ID%
-
 
 # Associate aksadmin User to aksadmins Group
 
@@ -155,14 +156,14 @@ ssh-keygen \
     -N mypassphrase
 
 # List Files, using git bash
-ls -lrt $HOME/.ssh/aks-prod-sshkeys
+# ls -lrt $HOME/.ssh/aks-prod-sshkeys
 
 # this using cmd
 dir %homepath%\.ssh\aks-prod-sshkeys\
 
 # Set SSH KEY Path
-AKS_SSH_KEY_LOCATION=$HOME/.ssh/aks-prod-sshkeys/aksprodsshkey.pub
-echo $AKS_SSH_KEY_LOCATION
+# AKS_SSH_KEY_LOCATION=$HOME/.ssh/aks-prod-sshkeys/aksprodsshkey.pub
+# echo $AKS_SSH_KEY_LOCATION
 
 # If you are using windows cmd
 set AKS_SSH_KEY_LOCATION=%homepath%\.ssh\aks-prod-sshkeys\aksprodsshkey.pub
@@ -170,6 +171,7 @@ echo %AKS_SSH_KEY_LOCATION%
 
 az monitor log-analytics workspace list
 
+# Create the log analytics workspace, then get the id of that created resource, and finally assign that id to a variable.
 @FOR /f "delims=" %i in ('az monitor log-analytics workspace create ^
     --resource-group %AKS_RESOURCE_GROUP% ^
     --workspace-name aksprod-loganalytics-workspace1 ^
@@ -182,21 +184,22 @@ echo %AKS_MONITORING_LOG_ANALYTICS_WORKSPACE_ID%
 az monitor log-analytics workspace list
 
 # Incase you want to delete.
-az monitor log-analytics workspace delete ^
-    --resource-group %AKS_RESOURCE_GROUP% ^
-    --workspace-name aksprod-loganalytics-workspace1 ^
-    --yes
+# az monitor log-analytics workspace delete ^
+#     --resource-group %AKS_RESOURCE_GROUP% ^
+#     --workspace-name aksprod-loganalytics-workspace1 ^
+#     --yes
 
 # Incase you want to delete. The follwoing command will ask for confirmation(there is no --yes flag)
-az monitor log-analytics workspace delete ^
-    --resource-group %AKS_RESOURCE_GROUP% ^
-    --workspace-name aksprod-loganalytics-workspace1 ^
+#az monitor log-analytics workspace delete ^
+#    --resource-group %AKS_RESOURCE_GROUP% ^
+#    --workspace-name aksprod-loganalytics-workspace1 ^
         
 # List Kubernetes Versions available as on today
 az aks get-versions --location %AKS_REGION% -o table
 
 # Get Azure Active Directory (AAD) Tenant ID
-set AZURE_DEFAULT_AD_TENANTID=$(az account show --query tenantId --output tsv)
+# Thr following would not work.
+# set AZURE_DEFAULT_AD_TENANTID=$(az account show --query tenantId --output tsv)
 
 @FOR /f "delims=" %i in ('az account show --query tenantId --output tsv') DO set AZURE_DEFAULT_AD_TENANTID=%i
 
@@ -245,28 +248,33 @@ az aks create --resource-group %AKS_RESOURCE_GROUP% ^
               --enable-ahub ^
               --zones 3
 
-az aks show --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER%
+# Get the name of newly created Resource Group MC_aks-prod_aksprod1_centralus
+# Get the identity list, you should now see 3. You can see the image as well.
+# Get the resource group name, MC_aks-prod_aksprod1_centralus
+az identity list --resource-group MC_aks-prod_aksprod1_centralus
 
-az aks show --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER% --query id
+az aks show --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER_NAME%
 
-az aks show --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER% --query servicePrincipalProfile
+az aks show --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER_NAME% --query id
+
+az aks show --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER_NAME% --query servicePrincipalProfile
 
 @FOR /f "delims=" %i in ('az aks show --resource-group %AKS_RESOURCE_GROUP% ^
-              --name %AKS_CLUSTER% ^
+              --name %AKS_CLUSTER_NAME% ^
               --query id --output tsv') DO set AKS_ID=%i
 
 echo %AKS_ID%
 
-az aks get-credentials --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER_NAME%
+az aks get-credentials --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER_NAME% 
 
 # If you want to logout or unset, use the following.
-kubectl config unset current-context
+# kubectl config unset current-context
 
 kubectl get nodes
 
 # When asked, use the following creds
 # --user-principal-name aksadmin1@vivek7dm1outlook.onmicrosoft.com ^
-# --password @AKSDemo123 ^
+# --password @AKSDemo123
 
 kubectl cluster-info
 
@@ -279,7 +287,7 @@ az aks nodepool list --cluster-name %AKS_CLUSTER_NAME% --resource-group %AKS_RES
 kubectl get pod -o=custom-columns=NODE-NAME:.spec.nodeName,POD-NAME:.metadata.name -n kube-system
 
 # A successful cluster creation using managed identities contains this service principal profile information:
-az aks show --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER% --query servicePrincipalProfile
+az aks show --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER_NAME% --query servicePrincipalProfile
 
 # If the aks cluster is in a different resource group than vnet, then you have to do step [11 and 12 of this page](https://github.com/stacksimplify/azure-aks-kubernetes-masterclass/tree/master/23-AKS-Production-Grade-Cluster-Design-using-az-aks-cli/23-01-Create-AKSCluster-with-az-aks-cli).
 # Not clear, need to find out.
@@ -288,25 +296,38 @@ az aks show --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER% --query s
 # Enable Virtual Nodes Add-On on our AKS Cluster
 
 # Verify Environment Variables
-echo %AKS_CLUSTER%, %AKS_VNET_SUBNET_VIRTUALNODES%
+echo %AKS_CLUSTER_NAME%, %AKS_VNET_SUBNET_VIRTUALNODES%
 
 # Enable Virtual Nodes on AKS Cluster
 az aks enable-addons ^
     --resource-group %AKS_RESOURCE_GROUP% ^
-    --name %AKS_CLUSTER% ^
+    --name %AKS_CLUSTER_NAME% ^
     --addons virtual-node ^
     --subnet-name %AKS_VNET_SUBNET_VIRTUALNODES%
+
+kubectl get nodes
+
+# Get the name of newly created Resource Group MC_aks-prod_aksprod1_centralus
+# Get the identity list, you should now see 3. You can see the image as well.
+# Get the resource group name, MC_aks-prod_aksprod1_centralus
+az identity list --resource-group MC_aks-prod_aksprod1_centralus
 
 # Get pods
 kubectl get pods -n kube-system
 
+# If you want to delete a pod
+kubectl delete pod aci-connector-linux-57796b4bf9-t259r -n kube-system
+
 # Observe the output. You will see the aci-connector-linux-686f8748cc-7fld5 pod is not able to start.
 # So look at the logs. Ensure you have the connect pod name below
-kubectl logs -f aci-connector-linux-686f8748cc-7fld5 -n kube-system
+kubectl logs -f aci-connector-linux-57796b4bf9-t259r -n kube-system
+
+
+kubectl delete pod aci-connector-linux-57796b4bf9-t259r -n kube-system
 
 # Stoped from 163 Step-09_ Create Virtual Nodes and Fix ACI Connector Issues related to Access.mp4
 
-# List Nodes
+# List Nodes, there should be two now.
 kubectl get nodes   
 
 # When its time to delete, you can run the following comands.
