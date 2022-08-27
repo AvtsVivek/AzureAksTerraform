@@ -29,7 +29,7 @@ variable "environment" {
 
 # SSH Public Key for Linux VMs
 variable "ssh_public_key" {
-  default     = "~/.ssh/aks-prod-sshkeys/aksprodsshkey.pub"
+  default = "~/.ssh/aks-prod-sshkeys/aksprodsshkey.pub"
   # C:\Users\msi\.ssh\aks-prod-sshkeys
   description = "This variable defines the SSH Public Key for Linux k8s Worker nodes"
 }
