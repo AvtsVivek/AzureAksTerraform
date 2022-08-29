@@ -38,11 +38,11 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     orchestrator_version = data.azurerm_kubernetes_service_versions.current.latest_version
     # The following is giving error. So commenting out.
     # availability_zones   = [1, 2, 3]
-    availability_zones  = 3
+    # availability_zones  = 3
     enable_auto_scaling = true
     max_count           = 3
     min_count           = 1
-    os_disk_size_gb     = 10
+    os_disk_size_gb     = 30
     type                = "VirtualMachineScaleSets"
     node_labels = {
       "nodepool-type" = "system"
@@ -63,15 +63,36 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     type = "SystemAssigned"
   }
 
+
+  # az aks enable-addons ^
+  #     --resource-group %AKS_RESOURCE_GROUP% ^
+  #     --name %AKS_CLUSTER_NAME% ^
+  #     --addons virtual-node ^
+  #     --subnet-name %AKS_VNET_SUBNET_VIRTUALNODES%
+
+
   # The following is also giving error.
   # Add On Profiles
   # addon_profile {
   #   azure_policy { enabled = true }
   #   oms_agent {
-  #     enabled                    = true
+  #     enabled = true
+  #     # azurerm_log_analytics_workspace" "insights
   #     log_analytics_workspace_id = azurerm_log_analytics_workspace.insights.id
   #   }
   # }
+
+  /* 
+az aks enable-addons ^
+    --resource-group %AKS_RESOURCE_GROUP% ^
+    --name %AKS_CLUSTER_NAME% ^
+    --addons virtual-node ^
+    --subnet-name %AKS_VNET_SUBNET_VIRTUALNODES%
+
+ */
+
+  azure_policy_enabled = true
+
 
   # tf7-aks-cluster
   # RBAC and Azure AD Integration Block

@@ -2,7 +2,7 @@
 cd ../..
 
 # cd into the directory.
-cd ./iac/010050-basic-aks
+cd ./iac/010050-basic-aks-tf
 
 terraform fmt
 
@@ -21,6 +21,28 @@ terraform state list
 terraform state show 
 
 terraform show terraform.tfstate
+
+# Get the resource group name and AKS_CLUSTER_NAME 
+az aks get-credentials --resource-group terraform-aks-dev --name terraform-aks-dev-aks-cluster
+
+# If you want to logout or unset, use the following.
+# kubectl config unset current-context
+
+kubectl get nodes
+
+# When asked, use the following creds
+# --user-principal-name aksadmin1@vivek7dm1outlook.onmicrosoft.com ^
+# --password @AKSDemo123
+
+kubectl cluster-info
+
+az aks nodepool list
+
+az aks nodepool list --resource-group terraform-aks-dev --cluster-name terraform-aks-dev-aks-cluster -o table
+
+kubectl get pod -o=custom-columns=NODE-NAME:.spec.nodeName,POD-NAME:.metadata.name -n kube-system
+
+az aks show --resource-group terraform-aks-dev --name terraform-aks-dev-aks-cluster --query servicePrincipalProfile
 
 terraform plan -destroy -out main.destroy.tfplan
 
