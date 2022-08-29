@@ -6,9 +6,9 @@ resource "azuread_group" "aks_administrators" {
 
 
 resource "azuread_user" "aks_user" {
-  user_principal_name = "aksadmin1@vivek7dm1outlook.onmicrosoft.com"
-  display_name        = "AKS Admin1"
-  mail_nickname       = "AksAdmin1"
+  user_principal_name = "aksadmin2@vivek7dm1outlook.onmicrosoft.com"
+  display_name        = "AKS Admin2"
+  mail_nickname       = "AksAdmin2"
   password            = "@AKSDemo123"
 }
 

@@ -60,6 +60,7 @@ az network vnet subnet create ^
     --address-prefixes %AKS_VNET_SUBNET_VIRTUALNODES_PREFIX%
 
 # Verify, You should see two subnets now. Again wait for a minute
+# aks-subnet-default and aks-subnet-virtual-nodes
 az network vnet list
 
 # Display the Aks Vnet Subnet Defualt Id
@@ -88,11 +89,13 @@ echo %AKS_AD_AKSADMIN_GROUP_NAME%
 # Create Azure AD Group & Admin User
 az ad group create --display-name aksadmins --mail-nickname %AKS_AD_AKSADMIN_GROUP_NAME% --query objectId -o tsv
 az ad group show --group %AKS_AD_AKSADMIN_GROUP_NAME% --query id -o tsv
+
+# the following should give one gourp name, aksadmins
 az ad group list
 
 # Just in case if you want to delete use the following
 # az ad group delete --group %AKS_AD_AKSADMIN_GROUP_NAME%
-
+# The following should give one. aksadmins
 az ad group list
 
 # Assign the id to a variable to use later
@@ -110,6 +113,8 @@ echo %AKS_AD_AKSADMIN_GROUP_ID%
 
 # You can also verify in the portal as well by going to Azure Active Directory, and then groups.
 
+# The following should give two users
+# There should be two. AKS Admin1, vivek dm1.
 az ad user list
 
 # The following command Adds a user the Active Directory and also assigns the added user to a variable.
@@ -123,7 +128,7 @@ echo %AKS_AD_AKSADMIN1_USER_OBJECT_ID%
 
 # If you wnat to delete. Get the id first
 # az ad user delete --id &AKS_AD_AKSADMIN1_USER_OBJECT_ID&
-
+# There should be two. AKS Admin1, vivek dm1. 
 az ad user list
 
 echo %AKS_AD_AKSADMIN1_USER_OBJECT_ID%
@@ -136,7 +141,7 @@ az ad group member list --group %AKS_AD_AKSADMIN_GROUP_NAME%
 # Now add
 az ad group member add --group %AKS_AD_AKSADMIN_GROUP_NAME% --member-id %AKS_AD_AKSADMIN1_USER_OBJECT_ID%
 
-# Verify
+# Verify. This should give one name AKS Admin1
 az ad group member list --group %AKS_AD_AKSADMIN_GROUP_NAME%
 
 # Verify the same in the portal as well. 
@@ -187,7 +192,7 @@ az monitor log-analytics workspace list
 
 echo %AKS_MONITORING_LOG_ANALYTICS_WORKSPACE_ID%
 
-# Wait for some time
+# Wait for some time, you should get - aksprod-loganalytics-workspace1
 az monitor log-analytics workspace list
 
 # Incase you want to delete.
@@ -258,7 +263,8 @@ az aks create --resource-group %AKS_RESOURCE_GROUP% ^
 # Get the name of newly created Resource Group MC_aks-prod-cli_aksprod1_centralus
 # Get the identity list, you should now see 2. You can see the screenshot images as well.
 # Get the resource group name, MC_aks-prod-cli_aksprod1_centralus
-az identity list --resource-group MC_aks-prod-cli_aksprod1_centralus
+# omsagent-aksprod1 and aksprod1-agentpool
+az identity list --resource-group MC_aks-prod-cli_aksprod1_centralus 
 
 az aks show --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER_NAME%
 
@@ -277,6 +283,8 @@ az aks get-credentials --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER
 # If you want to logout or unset, use the following.
 # kubectl config unset current-context
 
+# The following should get one node pool
+# aks-systempool-20401882-vmss000000   Ready    agent   36m   v1.23.8
 kubectl get nodes
 
 # When asked, use the following creds
@@ -294,6 +302,8 @@ az aks nodepool list --cluster-name %AKS_CLUSTER_NAME% --resource-group %AKS_RES
 kubectl get pod -o=custom-columns=NODE-NAME:.spec.nodeName,POD-NAME:.metadata.name -n kube-system
 
 # A successful cluster creation using managed identities contains this service principal profile information:
+# We will have one here.
+# systempool  Linux     1.23.8               Standard_DS2_v2  1        30         Succeeded            System
 az aks show --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER_NAME% --query servicePrincipalProfile
 
 # If the aks cluster is in a different resource group than vnet, then you have to do step [11 and 12 of this page](https://github.com/stacksimplify/azure-aks-kubernetes-masterclass/tree/master/23-AKS-Production-Grade-Cluster-Design-using-az-aks-cli/23-01-Create-AKSCluster-with-az-aks-cli).
@@ -312,10 +322,13 @@ az aks enable-addons ^
     --addons virtual-node ^
     --subnet-name %AKS_VNET_SUBNET_VIRTUALNODES%
 
+# Now this time, you should see two. But wait for some time.
+# aks-systempool-20401882-vmss000000   Ready    agent   36m   v1.23.8
+# virtual-node-aci-linux               Ready    agent   13m   v1.19.10-vk-azure-aci-v1.4.1
 kubectl get nodes
 
 # Get the name of newly created Resource Group MC_aks-prod-cli_aksprod1_centralus
-# Get the identity list, you should now see 2. You can see the screenshot images as well.
+# Get the identity list, you should now see 3. You can see the screenshot images as well.
 # Get the resource group name, MC_aks-prod-cli_aksprod1_centralus
 az identity list --resource-group MC_aks-prod-cli_aksprod1_centralus
 

@@ -44,6 +44,15 @@ kubectl get pod -o=custom-columns=NODE-NAME:.spec.nodeName,POD-NAME:.metadata.na
 
 az aks show --resource-group terraform-aks-dev --name terraform-aks-dev-aks-cluster --query servicePrincipalProfile
 
+# az aks enable-addons ^
+#     --resource-group terraform-aks-dev ^
+#     --name terraform-aks-dev-aks-cluster ^
+#     --addons virtual-node ^
+#     --subnet-name %AKS_VNET_SUBNET_VIRTUALNODES%
+
+# Why is the following giving empity array? Not sure. Need to find out.
+az identity list --resource-group terraform-aks-dev-nrg
+
 terraform plan -destroy -out main.destroy.tfplan
 
 # terraform show main.destroy.tfplan
