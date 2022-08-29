@@ -4,11 +4,11 @@ cd ../..
 # Run the following commands in Windows CMD only. 
 
 # cd into the directory.
-cd ./iac/010010-basic-aks
+cd ./iac/010010-basic-aks-cli
 
 # First setup the required environment vars.
 # If you are using windows cmd
-set AKS_RESOURCE_GROUP=aks-prod
+set AKS_RESOURCE_GROUP=aks-prod-cli
 set AKS_REGION=centralus
 
 echo %AKS_RESOURCE_GROUP%
@@ -112,6 +112,7 @@ echo %AKS_AD_AKSADMIN_GROUP_ID%
 
 az ad user list
 
+# The following command Adds a user the Active Directory and also assigns the added user to a variable.
 @FOR /f "delims=" %i in ('az ad user create ^
   --display-name "AKS Admin1" ^
   --user-principal-name aksadmin1@vivek7dm1outlook.onmicrosoft.com ^
@@ -144,7 +145,12 @@ az ad group member list --group %AKS_AD_AKSADMIN_GROUP_NAME%
 # First create a directory
 mkdir %homepath%\.ssh\aks-prod-sshkeys
 
+# If you want to verify
+start %homepath%\.ssh\aks-prod-sshkeys
+
 # The following command should be executed in the git bash not in powershell nor in cmd
+cd ./iac/010010-basic-aks-cli
+
 
 # Create SSH Key(user git bash)
 ssh-keygen \
@@ -172,6 +178,7 @@ echo %AKS_SSH_KEY_LOCATION%
 az monitor log-analytics workspace list
 
 # Create the log analytics workspace, then get the id of that created resource, and finally assign that id to a variable.
+# The following command does all the three steps
 @FOR /f "delims=" %i in ('az monitor log-analytics workspace create ^
     --resource-group %AKS_RESOURCE_GROUP% ^
     --workspace-name aksprod-loganalytics-workspace1 ^
@@ -248,10 +255,10 @@ az aks create --resource-group %AKS_RESOURCE_GROUP% ^
               --enable-ahub ^
               --zones 3
 
-# Get the name of newly created Resource Group MC_aks-prod_aksprod1_centralus
-# Get the identity list, you should now see 3. You can see the image as well.
-# Get the resource group name, MC_aks-prod_aksprod1_centralus
-az identity list --resource-group MC_aks-prod_aksprod1_centralus
+# Get the name of newly created Resource Group MC_aks-prod-cli_aksprod1_centralus
+# Get the identity list, you should now see 2. You can see the screenshot images as well.
+# Get the resource group name, MC_aks-prod-cli_aksprod1_centralus
+az identity list --resource-group MC_aks-prod-cli_aksprod1_centralus
 
 az aks show --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER_NAME%
 
@@ -307,28 +314,28 @@ az aks enable-addons ^
 
 kubectl get nodes
 
-# Get the name of newly created Resource Group MC_aks-prod_aksprod1_centralus
-# Get the identity list, you should now see 3. You can see the image as well.
-# Get the resource group name, MC_aks-prod_aksprod1_centralus
-az identity list --resource-group MC_aks-prod_aksprod1_centralus
+# Get the name of newly created Resource Group MC_aks-prod-cli_aksprod1_centralus
+# Get the identity list, you should now see 2. You can see the screenshot images as well.
+# Get the resource group name, MC_aks-prod-cli_aksprod1_centralus
+az identity list --resource-group MC_aks-prod-cli_aksprod1_centralus
 
 # Get pods
 kubectl get pods -n kube-system
 
 # If you want to delete a pod
-kubectl delete pod aci-connector-linux-57796b4bf9-t259r -n kube-system
+kubectl delete pod aci-connector-linux-fcd85b789-7q6m2 -n kube-system
 
 # Observe the output. You will see the aci-connector-linux-686f8748cc-7fld5 pod is not able to start.
 # So look at the logs. Ensure you have the connect pod name below
-kubectl logs -f aci-connector-linux-57796b4bf9-t259r -n kube-system
+kubectl logs -f aci-connector-linux-fcd85b789-jt9dw -n kube-system
 
 
-kubectl delete pod aci-connector-linux-57796b4bf9-t259r -n kube-system
+kubectl delete pod aci-connector-linux-fcd85b789-jt9dw -n kube-system
 
 # Stoped from 163 Step-09_ Create Virtual Nodes and Fix ACI Connector Issues related to Access.mp4
 
 # List Nodes, there should be two now.
-kubectl get nodes   
+kubectl get nodes
 
 # When its time to delete, you can run the following comands.
 az group delete --name %AKS_RESOURCE_GROUP% --yes
