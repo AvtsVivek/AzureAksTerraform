@@ -85,6 +85,21 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
 
   azure_policy_enabled = true
 
+  # If we enable the following, then we get the following error when we peek inside the logs.aci_connector_linux 
+  # Error: error initializing provider azure: error setting up network profile: error creating subnet: 
+  # api call to https://management.azure.com/subscriptions/2b8ecb16-9b7a-40eb-a2ca-b8d344ac42e0
+  # /resourcegroups/terraform-aks-dev/providers/Microsoft.Network/virtualNetworks/aks-network
+  # /subnets/aks-default-subnet?api-version=2018-08-01: got HTTP response status code 403 error 
+  # code "AuthorizationFailed": The client 'cc7c275b-2f64-4718-9213-e6d4eb8fdc31' with object 
+  # id 'cc7c275b-2f64-4718-9213-e6d4eb8fdc31' does not have authorization to perform action 
+  # 'Microsoft.Network/virtualNetworks/subnets/write' over scope '
+  # /subscriptions/2b8ecb16-9b7a-40eb-a2ca-b8d344ac42e0/resourcegroups/terraform-aks-dev/providers
+  # /Microsoft.Network/virtualNetworks/aks-network/subnets/aks-default-subnet' 
+  # or the scope is invalid. If access was recently granted, please refresh your credentials.
+  
+  # I saw this so post. But coul dnot fix it.aci_connector_linux 
+  # https://stackoverflow.com/q/72806870/1977871
+  
   # aci_connector_linux {
   #   subnet_name = azurerm_subnet.aks-default.name
   # }
