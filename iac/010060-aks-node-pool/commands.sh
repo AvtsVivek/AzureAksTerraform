@@ -2,7 +2,7 @@
 cd ../..
 
 # cd into the directory.
-cd ./iac/010050-basic-aks-tf
+cd ./iac/010060-aks-node-pool
 
 terraform fmt
 
