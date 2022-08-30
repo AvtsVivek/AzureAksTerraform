@@ -131,10 +131,10 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   # }
 
   # # Network Profile
-  # network_profile {
-  #   network_plugin    = "azure"
-  #   load_balancer_sku = "standard"
-  # }
+  network_profile {
+    network_plugin    = "azure"
+    load_balancer_sku = "standard"
+  }
 
   tags = {
     Environment = "dev"
