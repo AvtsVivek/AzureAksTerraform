@@ -113,11 +113,11 @@ echo %AKS_AD_AKSADMIN_GROUP_ID%
 
 # You can also verify in the portal as well by going to Azure Active Directory, and then groups.
 
-# The following should give two users
-# There should be two. AKS Admin1, vivek dm1.
+# Just list out the users. There should be one at this point.
+# vivek dm1.
 az ad user list
 
-# The following command Adds a user the Active Directory and also assigns the added user to a variable.
+# The following command creats a user the Active Directory and also assigns the added user to a variable.
 @FOR /f "delims=" %i in ('az ad user create ^
   --display-name "AKS Admin1" ^
   --user-principal-name aksadmin1@vivek7dm1outlook.onmicrosoft.com ^
@@ -263,8 +263,8 @@ az aks create --resource-group %AKS_RESOURCE_GROUP% ^
 # Get the name of newly created Resource Group MC_aks-prod-cli_aksprod1_centralus
 # Get the identity list, you should now see 2. You can see the screenshot images as well.
 # Get the resource group name, MC_aks-prod-cli_aksprod1_centralus
-# omsagent-aksprod1 and aksprod1-agentpool
-az identity list --resource-group MC_aks-prod-cli_aksprod1_centralus 
+# omsagent-aksprod1 and aksprod1-agentpool. Sometimes I am getting empty array. Not sure why
+az identity list --resource-group MC_aks-prod-cli_aksprod1_centralus
 
 az aks show --resource-group %AKS_RESOURCE_GROUP% --name %AKS_CLUSTER_NAME%
 
@@ -330,6 +330,7 @@ kubectl get nodes
 # Get the name of newly created Resource Group MC_aks-prod-cli_aksprod1_centralus
 # Get the identity list, you should now see 3. You can see the screenshot images as well.
 # Get the resource group name, MC_aks-prod-cli_aksprod1_centralus
+# omsagent-aksprod1, aksprod1-agentpool, aciconnectorlinux-aksprod1
 az identity list --resource-group MC_aks-prod-cli_aksprod1_centralus
 
 # Get pods
@@ -340,10 +341,10 @@ kubectl delete pod aci-connector-linux-fcd85b789-7q6m2 -n kube-system
 
 # Observe the output. You will see the aci-connector-linux-686f8748cc-7fld5 pod is not able to start.
 # So look at the logs. Ensure you have the connect pod name below
-kubectl logs -f aci-connector-linux-fcd85b789-jt9dw -n kube-system
+kubectl logs -f aci-connector-linux-54fb76ccd-m5xct -n kube-system
 
 
-kubectl delete pod aci-connector-linux-fcd85b789-jt9dw -n kube-system
+kubectl delete pod aci-connector-linux-54fb76ccd-m5xct -n kube-system
 
 # Stoped from 163 Step-09_ Create Virtual Nodes and Fix ACI Connector Issues related to Access.mp4
 
@@ -353,7 +354,7 @@ kubectl get nodes
 # When its time to delete, you can run the following comands.
 az group delete --name %AKS_RESOURCE_GROUP% --yes
 
-az group delete --name NetworkWatcherRG 
+az group delete --name NetworkWatcherRG --yes
 
 az ad group delete --group %AKS_AD_AKSADMIN_GROUP_NAME%
 
