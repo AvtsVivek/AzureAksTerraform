@@ -2,7 +2,7 @@
 cd ../..
 
 # cd into the directory.
-cd ./iac/010070-aks-vnet
+cd ./iac/210070-aks-vnet
 
 terraform fmt
 
