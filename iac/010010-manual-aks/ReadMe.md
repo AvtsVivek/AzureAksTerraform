@@ -35,3 +35,10 @@
 
 - Step 12 
 ![Add Publish Profile](./images/8_Aks_AfterManualCreation2.jpg)
+
+- Step 13 
+![Add Publish Profile](./images/8_Aks_AfterManualCreation3.jpg)
+
+- Step 14 
+![Add Publish Profile](./images/8_Aks_AfterManualCreation4.jpg)
+
