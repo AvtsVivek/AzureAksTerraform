@@ -29,6 +29,8 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   location            = azurerm_resource_group.aks_rg.location
   resource_group_name = azurerm_resource_group.aks_rg.name
   dns_prefix          = "${azurerm_resource_group.aks_rg.name}-aks-cluster"
+  private_cluster_enabled = true
+  # dns_prefix_private_cluster = "${azurerm_resource_group.aks_rg.name}-aks-pvt-cluster"
   kubernetes_version  = data.azurerm_kubernetes_service_versions.current.latest_version
   node_resource_group = "${azurerm_resource_group.aks_rg.name}-nrg"
 
@@ -42,7 +44,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     enable_auto_scaling = true
     max_count           = 5
     min_count           = 1
-    os_disk_size_gb     = 10
+    os_disk_size_gb     = 30
     type                = "VirtualMachineScaleSets"
     node_labels = {
       "nodepool-type" = "system"
@@ -83,11 +85,13 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   # }
 
   azure_policy_enabled = true
+  
   # The following  
   # aci_connector_linux {
-    # subnet_name = ""
+  # subnet_name = ""
   # }
-  http_application_routing_enabled = true
+
+  http_application_routing_enabled = false
 
   oms_agent {
     log_analytics_workspace_id = azurerm_log_analytics_workspace.insights.id
@@ -105,11 +109,11 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   # }
 
   azure_active_directory_role_based_access_control {
-    managed = true
+    managed            = true
     azure_rbac_enabled = true
-    admin_group_object_ids = [
-      azuread_group.aks_administrators.object_id
-    ]
+    # admin_group_object_ids = [
+    #   azuread_group.aks_administrators.object_id
+    # ]
   }
 
   # Windows Profile
