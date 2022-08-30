@@ -336,14 +336,11 @@ az identity list --resource-group MC_aks-prod-cli_aksprod1_centralus
 # Get pods
 kubectl get pods -n kube-system
 
-# If you want to delete a pod
-kubectl delete pod aci-connector-linux-fcd85b789-7q6m2 -n kube-system
-
 # Observe the output. You will see the aci-connector-linux-686f8748cc-7fld5 pod is not able to start.
 # So look at the logs. Ensure you have the connect pod name below
 kubectl logs -f aci-connector-linux-54fb76ccd-m5xct -n kube-system
 
-
+# If you want to delete a pod
 kubectl delete pod aci-connector-linux-54fb76ccd-m5xct -n kube-system
 
 # Stoped from 163 Step-09_ Create Virtual Nodes and Fix ACI Connector Issues related to Access.mp4

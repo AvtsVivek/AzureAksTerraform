@@ -44,6 +44,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     min_count           = 1
     os_disk_size_gb     = 30
     type                = "VirtualMachineScaleSets"
+    vnet_subnet_id = azurerm_subnet.aks-default.id
     node_labels = {
       "nodepool-type" = "system"
       "environment"   = "dev"
@@ -83,10 +84,11 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   # }
 
   azure_policy_enabled = true
-  # The following  
+
   # aci_connector_linux {
-  # subnet_name = ""
+  #   subnet_name = azurerm_subnet.aks-default.name
   # }
+
   http_application_routing_enabled = true
 
   oms_agent {
