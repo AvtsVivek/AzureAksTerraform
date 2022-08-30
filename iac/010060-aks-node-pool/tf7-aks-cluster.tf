@@ -85,7 +85,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   azure_policy_enabled = true
   # The following  
   # aci_connector_linux {
-    # subnet_name = ""
+  # subnet_name = ""
   # }
   http_application_routing_enabled = true
 
@@ -105,7 +105,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   # }
 
   azure_active_directory_role_based_access_control {
-    managed = true
+    managed            = true
     azure_rbac_enabled = true
     admin_group_object_ids = [
       azuread_group.aks_administrators.object_id

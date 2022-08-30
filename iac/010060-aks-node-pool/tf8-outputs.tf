@@ -33,12 +33,12 @@ output "azure_ad_group_objectid" {
   value = azuread_group.aks_administrators.object_id
 }
 
-output azuread_user_id{
-   value = azuread_user.aks_user.id
+output "azuread_user_id" {
+  value = azuread_user.aks_user.id
 }
 
-output azuread_user_object_id{
-   value = azuread_user.aks_user.object_id
+output "azuread_user_object_id" {
+  value = azuread_user.aks_user.object_id
 }
 
 # Azure AKS Outputs
