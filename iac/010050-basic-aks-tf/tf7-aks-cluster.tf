@@ -82,16 +82,16 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   #   }
   # }
 
-  /* 
-az aks enable-addons ^
-    --resource-group %AKS_RESOURCE_GROUP% ^
-    --name %AKS_CLUSTER_NAME% ^
-    --addons virtual-node ^
-    --subnet-name %AKS_VNET_SUBNET_VIRTUALNODES%
-
- */
-
   azure_policy_enabled = true
+  # The following  
+  # aci_connector_linux {
+    # subnet_name = ""
+  # }
+  http_application_routing_enabled = true
+
+  oms_agent {
+    log_analytics_workspace_id = azurerm_log_analytics_workspace.insights.id
+  }
 
 
   # tf7-aks-cluster
@@ -103,6 +103,14 @@ az aks enable-addons ^
   #     admin_group_object_ids = [azuread_group.aks_administrators.id]
   #   }
   # }
+
+  azure_active_directory_role_based_access_control {
+    managed = true
+    azure_rbac_enabled = true
+    admin_group_object_ids = [
+      azuread_group.aks_administrators.object_id
+    ]
+  }
 
   # Windows Profile
   windows_profile {

@@ -13,8 +13,15 @@ resource "azuread_user" "aks_user" {
 }
 
 resource "azuread_group_member" "example" {
+
+  # Is this object_id or just id
+
   group_object_id  = azuread_group.aks_administrators.id
   member_object_id = azuread_user.aks_user.id
+
+  # group_object_id  = azuread_group.aks_administrators.object_id
+  # member_object_id = azuread_user.aks_user.object_id
+
 }
 
 # # The following command Adds a user the Active Directory and also assigns the added user to a variable.

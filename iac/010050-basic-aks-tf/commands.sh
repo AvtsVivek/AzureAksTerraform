@@ -23,12 +23,21 @@ terraform state show
 terraform show terraform.tfstate
 
 # Get the resource group name and AKS_CLUSTER_NAME 
+# Default admin
+az aks get-credentials --resource-group terraform-aks-dev --name terraform-aks-dev-aks-cluster --admin
+
 az aks get-credentials --resource-group terraform-aks-dev --name terraform-aks-dev-aks-cluster
+
+az aks get-credentials --resource-group terraform-aks-dev --name terraform-aks-dev-aks-cluster --overwrite-existing
+
+kubectl cluster-info
 
 # If you want to logout or unset, use the following.
 # kubectl config unset current-context
 
 kubectl get nodes
+
+az aks show --resource-group terraform-aks-dev --name terraform-aks-dev-aks-cluster
 
 # When asked, use the following creds
 # --user-principal-name aksadmin1@vivek7dm1outlook.onmicrosoft.com ^
