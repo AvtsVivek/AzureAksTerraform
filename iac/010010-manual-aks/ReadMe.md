@@ -42,3 +42,5 @@
 - Step 14 
 ![Add Publish Profile](./images/8_Aks_AfterManualCreation4.jpg)
 
+- Step 15
+![Add Publish Profile](./images/8_Aks_AfterManualCreation5.jpg)
