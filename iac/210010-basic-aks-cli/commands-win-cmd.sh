@@ -4,7 +4,7 @@ cd ../..
 # Run the following commands in Windows CMD only. 
 
 # cd into the directory.
-cd ./iac/010010-basic-aks-cli
+cd ./iac/210010-basic-aks-cli
 
 # First setup the required environment vars.
 # If you are using windows cmd
@@ -154,7 +154,7 @@ mkdir %homepath%\.ssh\aks-prod-sshkeys
 start %homepath%\.ssh\aks-prod-sshkeys
 
 # The following command should be executed in the git bash not in powershell nor in cmd
-cd ./iac/010010-basic-aks-cli
+cd ./iac/210010-basic-aks-cli
 
 
 # Create SSH Key(user git bash)

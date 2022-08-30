@@ -2,7 +2,7 @@
 cd ../..
 
 # cd into the directory.
-cd ./iac/010010-basic-aks
+cd ./iac/210010-basic-aks-cli
 
 # First setup the required environment vars.
 
