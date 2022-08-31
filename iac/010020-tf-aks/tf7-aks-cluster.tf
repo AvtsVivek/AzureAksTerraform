@@ -34,6 +34,8 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   kubernetes_version  = data.azurerm_kubernetes_service_versions.current.latest_version
   node_resource_group = "${azurerm_resource_group.aks_rg.name}-nrg"
 
+  
+
   default_node_pool {
     name                 = "agentpool"
     vm_size              = "Standard_B2s"
@@ -46,18 +48,23 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     min_count           = 1
     os_disk_size_gb     = 30
     type                = "VirtualMachineScaleSets"
+
     node_labels = {
       "nodepool-type" = "system"
       "environment"   = "dev"
       "nodepoolos"    = "linux"
       "app"           = "system-apps"
     }
+
     tags = {
       "nodepool-type" = "system"
       "environment"   = "dev"
       "nodepoolos"    = "linux"
       "app"           = "system-apps"
     }
+
+    vnet_subnet_id    = ""
+
   }
 
   # Identity (System Assigned or Service Principal)
@@ -134,6 +141,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   network_profile {
     network_plugin    = "azure"
     load_balancer_sku = "standard"
+  
   }
 
   tags = {
