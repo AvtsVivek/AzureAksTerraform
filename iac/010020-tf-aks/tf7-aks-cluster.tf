@@ -34,7 +34,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   kubernetes_version  = data.azurerm_kubernetes_service_versions.current.latest_version
   node_resource_group = "${azurerm_resource_group.aks_rg.name}-nrg"
 
-  
+
 
   default_node_pool {
     name                 = "agentpool"
@@ -62,8 +62,6 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
       "nodepoolos"    = "linux"
       "app"           = "system-apps"
     }
-
-    vnet_subnet_id    = ""
 
   }
 
@@ -141,7 +139,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   network_profile {
     network_plugin    = "azure"
     load_balancer_sku = "standard"
-  
+
   }
 
   tags = {

@@ -24,11 +24,11 @@ terraform show terraform.tfstate
 
 # Get the resource group name and AKS_CLUSTER_NAME 
 # Default admin
-az aks get-credentials --resource-group terraform-aks-dev --name terraform-aks-dev-aks-cluster --admin
+az aks get-credentials --resource-group aks-tf-trial1-rg-dev --name aks-tf-trial1-rg-dev-aks-cluster --admin
 
-az aks get-credentials --resource-group terraform-aks-dev --name terraform-aks-dev-aks-cluster
+az aks get-credentials --resource-group aks-tf-trial1-rg-dev --name aks-tf-trial1-rg-dev-aks-cluster
 
-az aks get-credentials --resource-group terraform-aks-dev --name terraform-aks-dev-aks-cluster --overwrite-existing
+az aks get-credentials --resource-group aks-tf-trial1-rg-dev --name aks-tf-trial1-rg-dev-aks-cluster --overwrite-existing
 
 kubectl cluster-info
 
@@ -37,7 +37,7 @@ kubectl cluster-info
 
 kubectl get nodes
 
-az aks show --resource-group terraform-aks-dev --name terraform-aks-dev-aks-cluster
+az aks show --resource-group aks-tf-trial1-rg-dev --name aks-tf-trial1-rg-dev-aks-cluster
 
 # When asked, use the following creds
 # --user-principal-name aksadmin1@vivek7dm1outlook.onmicrosoft.com ^
@@ -47,12 +47,12 @@ kubectl cluster-info
 
 az aks nodepool list
 
-az aks nodepool list --resource-group terraform-aks-dev --cluster-name terraform-aks-dev-aks-cluster -o table
+az aks nodepool list --resource-group aks-tf-trial1-rg-dev --cluster-name aks-tf-trial1-rg-dev-aks-cluster -o table
 
 kubectl get pod -o=custom-columns=NODE-NAME:.spec.nodeName,POD-NAME:.metadata.name -n kube-system
 
 # The following should show msi
-az aks show --resource-group terraform-aks-dev --name terraform-aks-dev-aks-cluster --query servicePrincipalProfile
+az aks show --resource-group aks-tf-trial1-rg-dev --name aks-tf-trial1-rg-dev-aks-cluster --query servicePrincipalProfile
 
 # az aks enable-addons ^
 #     --resource-group terraform-aks-dev ^
@@ -66,7 +66,8 @@ az aks show --resource-group terraform-aks-dev --name terraform-aks-dev-aks-clus
 # omsagent-terraform-aks-dev-aks-cluster
 # azurepolicy-terraform-aks-dev-aks-cluster
 # terraform-aks-dev-aks-cluster-agentpool
-az identity list --resource-group terraform-aks-dev-nrg
+az identity list --resource-group aks-tf-trial1-rg-dev
+az identity list --resource-group aks-tf-trial1-rg-dev-nrg
 
 # Get pods
 kubectl get pods -n kube-system
@@ -80,6 +81,42 @@ kubectl logs -f aci-connector-linux-54fb76ccd-m5xct -n kube-system
 
 
 kubectl delete pod aci-connector-linux-54fb76ccd-m5xct -n kube-system
+
+kubectl get deployment 
+
+kubectl get deployment -n kube-system
+
+kubectl get svc
+
+kubectl get svc -n kube-system
+
+kubectl get service
+
+kubectl get service -n kube-system
+
+kubectl apply -f .\kube-manifests\01-Webserver-Apps\
+
+kubectl get pods
+
+# From the output of the above command, the pod id and put in the following commands.
+
+kubectl logs -f app1-nginx-deployment-654599dd66-fxkl9
+
+kubectl describe pod app1-nginx-deployment-654599dd66-fxkl9
+
+kubectl get deployment 
+
+kubectl get deployment -n kube-system
+
+kubectl get svc
+
+kubectl get svc -n kube-system
+
+kubectl get service
+
+kubectl get service -n kube-system
+
+# From the above commands, get the external ip address and browse to it.
 
 terraform plan -destroy -out main.destroy.tfplan
 
