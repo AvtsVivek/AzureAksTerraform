@@ -54,14 +54,7 @@ kubectl get pod -o=custom-columns=NODE-NAME:.spec.nodeName,POD-NAME:.metadata.na
 # The following should show msi
 az aks show --resource-group aks-tf-trial1-rg-dev --name aks-tf-trial1-rg-dev-aks-cluster --query servicePrincipalProfile
 
-# az aks enable-addons ^
-#     --resource-group terraform-aks-dev ^
-#     --name terraform-aks-dev-aks-cluster ^
-#     --addons virtual-node ^
-#     --subnet-name %AKS_VNET_SUBNET_VIRTUALNODES%
-
 # Why is the following giving empity array? Not sure. Need to find out(some times).
-
 # httpapplicationrouting-terraform-aks-dev-aks-cluster
 # omsagent-terraform-aks-dev-aks-cluster
 # azurepolicy-terraform-aks-dev-aks-cluster
