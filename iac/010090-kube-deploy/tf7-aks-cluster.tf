@@ -11,11 +11,11 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     name                 = "agentpool"
     vm_size              = "Standard_B2s"
     orchestrator_version = data.azurerm_kubernetes_service_versions.current.latest_version
-    enable_auto_scaling = true
-    max_count           = 5
-    min_count           = 1
-    os_disk_size_gb     = 30
-    type                = "VirtualMachineScaleSets"
+    enable_auto_scaling  = true
+    max_count            = 5
+    min_count            = 1
+    os_disk_size_gb      = 30
+    type                 = "VirtualMachineScaleSets"
 
     node_labels = {
       "nodepool-type" = "system"
