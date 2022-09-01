@@ -131,6 +131,58 @@ kubectl describe service my-first-service
 
 kubectl get ns
 
+# Interact with pod
+
+kubectl get pod my-first-pod
+
+kubectl logs my-first-pod
+
+# The following gives the logs interactively as they are producted.
+# Run the following command, then get the public ip(external ip) for this service(kubectl get service -o wide) and then browse the app.
+# Then see that there are logs getting streamed.
+kubectl logs -f my-first-pod
+
+# Now Connect to Container in a POD and execute commands
+# Connect to Nginx Container in a POD
+kubectl exec -it my-first-pod -- /bin/bash
+
+# Execute some commands in Nginx container
+ls
+cd /usr/share/nginx/html
+cat index.html
+exit
+
+# Running individual commands in a Container
+
+kubectl exec -it my-first-pod -- env
+kubectl exec -it my-first-pod -- ls
+kubectl exec -it my-first-pod -- cat /usr/share/nginx/html/index.html
+
+# Get YAML Output
+# Get pod definition YAML output
+kubectl get pod my-first-pod -o wide 
+kubectl get pod my-first-pod -o yaml   
+
+# Get service definition YAML output
+kubectl get service my-first-service -o wide
+kubectl get service my-first-service -o yaml   
+
+# Now clean up
+
+# Get all Objects in default namespace
+kubectl get all
+
+# Delete Services
+# Once the following command is execsuted, go to the portal, aks-tf-trial1-rg-dev-nrg resource group and then see the public ips. 
+# There will be only one public ip after the deletion of the service.
+kubectl delete svc my-first-service
+
+# Delete Pod
+kubectl delete pod my-first-pod
+
+# Get all Objects in default namespace
+kubectl get all
+
 terraform plan -destroy -out main.destroy.tfplan
 
 # terraform show main.destroy.tfplan
