@@ -129,9 +129,19 @@ kubectl get svc
 # Also go to the portal, inside of the resource group aks-tf-trial1-rg-dev-nrg, you should see two public ips, instead of earlier one.
 kubectl get svc
 
+kubectl get deploy my-first-deployment -o yaml
+
+kubectl get deploy my-first-deployment -o json
+
 kubectl delete svc my-first-deployment-service
 
 kubectl delete deploy my-first-deployment
+
+
+# Install Jq(https://stedolan.github.io/jq/, download jq-win64.exe, rename that to jq.exe. Then place it in some folder, add that folder to the path env var)
+# The open a new command prompt and then exectte the following 
+kubectl get deploy my-first-deployment -o json | jq '.spec.template.spec.containers[0].name'
+# This should give the container name. Note that.
 
 ##############################################################################
 

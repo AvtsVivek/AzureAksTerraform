@@ -39,3 +39,42 @@ docker container ls -a
 
 docker container rm mynginx1
 
+docker build -t avts/nginxvivek:v1 .
+
+docker run --name mynginx1 -p 81:80 -d avts/nginxvivek:v1
+
+# Now browse to localhost:81
+
+docker run --name mynginx1 -p 81:80 -d avts/nginxvivek:v1.1
+
+docker push avts/nginxvivek:v1.1
+
+docker build -t avts/nginxvivek:v2 .
+
+docker container stop mynginx1
+
+docker container rm mynginx1
+
+docker run --name mynginx1 -p 81:80 -d avts/nginxvivek:v2
+
+docker push avts/nginxvivek:v2
+
+docker build -t avts/nginxvivek:v3 .
+
+docker container stop mynginx1
+
+docker container rm mynginx1
+
+docker run --name mynginx1 -p 81:80 -d avts/nginxvivek:v3
+
+docker push avts/nginxvivek:v3
+
+docker build -t avts/nginxvivek:v4 .
+
+docker container stop mynginx1
+
+docker container rm mynginx1
+
+docker run --name mynginx1 -p 81:80 -d avts/nginxvivek:v4
+
+docker push avts/nginxvivek:v4
