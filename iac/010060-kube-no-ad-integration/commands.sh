@@ -1,7 +1,7 @@
 cd ../..
 
 # cd into the directory.
-cd ./iac/010050-kube-pods-intro
+cd ./iac/010060-kube-no-ad-integration
 
 terraform fmt
 

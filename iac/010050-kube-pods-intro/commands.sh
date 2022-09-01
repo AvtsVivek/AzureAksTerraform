@@ -76,7 +76,6 @@ kubectl delete pod aci-connector-linux-fcd85b789-7q6m2 -n kube-system
 # So look at the logs. Ensure you have the connect pod name below
 kubectl logs -f aci-connector-linux-54fb76ccd-m5xct -n kube-system
 
-
 kubectl delete pod aci-connector-linux-54fb76ccd-m5xct -n kube-system
 
 # Creating a pod.
@@ -114,6 +113,7 @@ kubectl get service
 kubectl describe service my-first-service
 
 # Notice that there is no external ip address associted with this service.
+# That is because the service is of NodePort and not LoadBalancer
 kubectl get service my-first-service -o wide
 
 # So delete this service.
