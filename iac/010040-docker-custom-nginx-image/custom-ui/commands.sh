@@ -2,7 +2,7 @@
 cd ../..
 
 # cd into the directory.
-cd ./iac/010040-docker-custom-nginx-image
+cd ./iac/010040-docker-custom-nginx-image/custom-ui
 
 docker run --name mynginxdefault -p 81:80 -d nginx
 

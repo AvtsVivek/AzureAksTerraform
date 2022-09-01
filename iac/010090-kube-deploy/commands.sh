@@ -124,7 +124,6 @@ kubectl expose deployment my-first-deployment --type=LoadBalancer --port=80 --ta
 # Get Service Info
 kubectl get svc
 
-
 # Now observe the service that gets created. Get the EXTERNAL-IP, but before that wait for a minute, else it will show pending.
 # Also go to the portal, inside of the resource group aks-tf-trial1-rg-dev-nrg, you should see two public ips, instead of earlier one.
 kubectl get svc
@@ -137,11 +136,117 @@ kubectl delete svc my-first-deployment-service
 
 kubectl delete deploy my-first-deployment
 
-
 # Install Jq(https://stedolan.github.io/jq/, download jq-win64.exe, rename that to jq.exe. Then place it in some folder, add that folder to the path env var)
 # The open a new command prompt and then exectte the following 
 kubectl get deploy my-first-deployment -o json | jq '.spec.template.spec.containers[0].name'
-# This should give the container name. Note that.
+# This should give the container name. Note that. So the <container-name> is nginxvivek
+# Replace <container-name> with nginxvivek
+# kubectl set image deployment/my-first-deployment <container-name>
+kubectl set image deployment/my-first-deployment nginxvivek=avts/nginxvivek:v2
+
+# https://github.com/stacksimplify/kubernetes-fundamentals/tree/master/04-Deployments-with-kubectl/04-03-Rollback-Deployment
+
+# Get the External Ip from the svc. 
+kubectl get svc
+# Then browse to that ip. You should see Version 2.
+
+# Next update that to 3
+kubectl set image deployment/my-first-deployment nginxvivek=avts/nginxvivek:v3
+# Get the External Ip from the svc. 
+kubectl get svc
+# Then browse to that ip. You should see Version 3.
+
+# Next update that to 4
+kubectl set image deployment/my-first-deployment nginxvivek=avts/nginxvivek:v4
+# Get the External Ip from the svc. 
+kubectl get svc
+# Then browse to that ip. You should see Version 3.
+
+# Observe the events
+kubectl describe deployment/my-first-deployment
+
+# Also look at the replica sets.
+kubectl get rs
+
+# Verify Rollout Status 
+kubectl rollout status deployment/my-first-deployment
+
+# Verify Deployment
+kubectl get deploy
+
+# Check the Rollout History of a Deployment
+kubectl rollout history deployment/my-first-deployment  
+
+# Check the status
+kubectl rollout status deployment/my-first-deployment  
+
+# Edit Deployment
+kubectl edit deployment/my-first-deployment --record=true
+
+# Observe the events
+kubectl describe deployment/my-first-deployment
+
+# Also look at the replica sets.
+kubectl get rs
+
+kubectl rollout status deployment/my-first-deployment  
+
+# Now RollBack deployments.
+
+# First take a look at history
+kubectl rollout history deployment/my-first-deployment  
+
+kubectl rollout history deployment/my-first-deployment --revision=6
+
+# Undo Deployment
+kubectl rollout undo deployment/my-first-deployment
+
+# Rollback Deployment to Specific Revision
+kubectl rollout history deployment/my-first-deployment  
+kubectl rollout undo deployment/my-first-deployment --to-revision=9
+
+# List Deployment Rollout History
+kubectl rollout history deployment/my-first-deployment  
+
+# Rolling restarts will kill the existing pods and recreate new pods in a rolling fashion.
+kubectl rollout restart deployment/my-first-deployment  
+
+# https://github.com/stacksimplify/kubernetes-fundamentals/tree/master/04-Deployments-with-kubectl/04-04-Pause-and-Resume-Deployment
+
+# Pause the Deployment
+kubectl rollout pause deployment/my-first-deployment
+
+kubectl set image deployment/my-first-deployment nginxvivek=avts/nginxvivek:v1
+
+# Check the Rollout History of a Deployment
+# No new rollout should start, we should see same number of versions as 
+# we check earlier with last version number matches which we have noted earlier.
+kubectl rollout history deployment/my-first-deployment  
+
+# No new replicaSet created. We should have same number of replicaSets as earlier when we took note. 
+kubectl get rs
+
+# Resume the Deployment
+kubectl rollout resume deployment/my-first-deployment
+
+# Check the Rollout History of a Deployment
+kubectl rollout history deployment/my-first-deployment  
+# Observation: You should see a new version got created
+
+# Get list of ReplicaSets
+kubectl get rs
+# Observation: You should see new ReplicaSet.
+
+# Clean up
+
+# Delete Deployment
+kubectl delete deployment my-first-deployment
+
+# Delete Service
+kubectl delete svc my-first-deployment-service
+
+# Get all Objects from Kubernetes default namespace
+kubectl get all
 
 ##############################################################################
 
