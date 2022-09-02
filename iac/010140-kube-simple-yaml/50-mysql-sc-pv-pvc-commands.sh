@@ -68,19 +68,12 @@ kubectl get all -n default
 
 ###################################################################################
 
-kubectl apply -f .\kube-manifests\5-10-PVC-ConfigMap-MySQL\01-persistent-volume-claim.yml
+kubectl apply -f .\kube-manifests\5-15-SC-PVC-ConfigMap-MySQL
 
 kubectl get pvc
 # A PVC will be created but will be in pending state.
 
 kubectl get pv
-
-kubectl apply -f .\kube-manifests\5-10-PVC-ConfigMap-MySQL\02-UserManagement-ConfigMap.yml
-
-kubectl get ConfigMap
-
-kubectl apply -f .\kube-manifests\5-10-PVC-ConfigMap-MySQL\03-mysql-deployment.yml
-
 kubectl get deploy
 kubectl get po
 kubectl get ConfigMap
@@ -88,18 +81,12 @@ kubectl get pvc
 # Notice a pvc is present with Bound Status.
 
 kubectl get pv
-
-kubectl delete -f .\kube-manifests\5-10-PVC-ConfigMap-MySQL\03-mysql-deployment.yml
-
 kubectl get pvc
 # Notice a pvc is still present with Bound Status.
 
 kubectl get pv
 # So is a pv. 
 
-# Now delete cofig map and pvc. 
-kubectl delete -f .\kube-manifests\5-10-PVC-ConfigMap-MySQL\02-UserManagement-ConfigMap.yml
-kubectl delete -f .\kube-manifests\5-10-PVC-ConfigMap-MySQL\01-persistent-volume-claim.yml
 
 # Once the pvc is delete, wait for a minute.
 kubectl get pvc
@@ -125,17 +112,15 @@ show schemas # this woould not work. You should put semi colon(;) as well
 
 show schemas;
 
-kubectl get pvc
-kubectl get pv
-
 kubectl get all
+
+kubectl delete -f .\kube-manifests\5-15-SC-PVC-ConfigMap-MySQL
 
 # But if you go to the UI(portal.azure.com) you can still see the azure disk.
-
-###################################################################################
+####################################################################################
 # Get all Objects from Kubernetes default namespace
-kubectl get all
 
+kubectl get all
 ###################################################################################
 
 terraform plan -destroy -out main.destroy.tfplan
