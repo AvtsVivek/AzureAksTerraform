@@ -8,4 +8,8 @@ spec:
   storageClassName: managed-premium-retain-sc
   resources:
     requests:
-      storage: 5Gi      
+      storage: 5Gi     
+
+
+# https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-claim-v1/
+

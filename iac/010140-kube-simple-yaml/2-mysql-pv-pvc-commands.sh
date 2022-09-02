@@ -71,8 +71,11 @@ kubectl get all -n default
 kubectl apply -f .\kube-manifests\5-01-SC-PVC-ConfigMap-MySQL\
 
 # Or individually 
-# kubectl apply -f .\kube-manifests\1-pod\02-pod-definition.yml
-# kubectl apply -f .\kube-manifests\1-pod\03-pod-lb-service.yml
+kubectl apply -f .\kube-manifests\5-01-SC-PVC-ConfigMap-MySQL\01-storage-class.yml
+kubectl apply -f .\kube-manifests\5-01-SC-PVC-ConfigMap-MySQL\02-persistent-volume-claim.yml
+kubectl apply -f .\kube-manifests\5-01-SC-PVC-ConfigMap-MySQL\03-UserManagement-ConfigMap.yml
+kubectl apply -f .\kube-manifests\5-01-SC-PVC-ConfigMap-MySQL\04-mysql-deployment.yml
+kubectl apply -f .\kube-manifests\5-01-SC-PVC-ConfigMap-MySQL\05-mysql-clusterip-service.yml
 
 # List Replicasets
 kubectl get po

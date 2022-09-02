@@ -36,6 +36,7 @@ parameters:
 #Azure Disk. 
 #We will be surprised provided if we intended to retain that data as backup.
 # reclaimPolicy: retain -  Disk is retained even when PVC is deleted - Recommended Option
+# Till the kubernetes cluster is deleted, the disk will be retained.
 
 # Note-4:
 # Both reclaimPolicy: Delete and volumeBindingMode: Immediate are default settings
@@ -45,4 +46,6 @@ parameters:
 # https://kubernetes.io/docs/concepts/storage/storage-classes/#azure-disk
 # Managed: When managed used, that disk is persisted for the Lifecycle of the cluster.
 # If we delete cluster, it will delete the disk
+
+# https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/storage-class-v1/
 ##############################################################################
