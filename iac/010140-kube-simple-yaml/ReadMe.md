@@ -4,4 +4,6 @@
 
 - This talks about deployments, a hiher abstraction of replicasets.
 
+- The exercise 5-01-PVC-ConfigMap-MySQL uses system provisioned storage classes.
+  - 
 - 

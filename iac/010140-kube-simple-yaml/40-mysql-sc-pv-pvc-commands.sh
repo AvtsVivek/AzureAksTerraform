@@ -68,14 +68,44 @@ kubectl get all -n default
 
 ###################################################################################
 
-kubectl apply -f .\kube-manifests\5-01-SC-PVC-ConfigMap-MySQL\
+kubectl apply -f .\kube-manifests\5-10-PVC-ConfigMap-MySQL\01-persistent-volume-claim.yml
 
-# Or individually 
-kubectl apply -f .\kube-manifests\5-01-SC-PVC-ConfigMap-MySQL\01-storage-class.yml
-kubectl apply -f .\kube-manifests\5-01-SC-PVC-ConfigMap-MySQL\02-persistent-volume-claim.yml
-kubectl apply -f .\kube-manifests\5-01-SC-PVC-ConfigMap-MySQL\03-UserManagement-ConfigMap.yml
-kubectl apply -f .\kube-manifests\5-01-SC-PVC-ConfigMap-MySQL\04-mysql-deployment.yml
-kubectl apply -f .\kube-manifests\5-01-SC-PVC-ConfigMap-MySQL\05-mysql-clusterip-service.yml
+kubectl get pvc
+# A PVC will be created but will be in pending state.
+
+kubectl get pv
+
+kubectl apply -f .\kube-manifests\5-10-PVC-ConfigMap-MySQL\02-UserManagement-ConfigMap.yml
+
+kubectl get ConfigMap
+
+kubectl apply -f .\kube-manifests\5-10-PVC-ConfigMap-MySQL\03-mysql-deployment.yml
+
+kubectl get deploy
+kubectl get po
+kubectl get ConfigMap
+kubectl get pvc
+# Notice a pvc is present with Bound Status.
+
+kubectl get pv
+
+kubectl delete -f .\kube-manifests\5-10-PVC-ConfigMap-MySQL\03-mysql-deployment.yml
+
+kubectl get pvc
+# Notice a pvc is still present with Bound Status.
+
+kubectl get pv
+# So is a pv. 
+
+# Now delete cofig map and pvc. 
+kubectl delete -f .\kube-manifests\5-10-PVC-ConfigMap-MySQL\02-UserManagement-ConfigMap.yml
+kubectl delete -f .\kube-manifests\5-10-PVC-ConfigMap-MySQL\01-persistent-volume-claim.yml
+
+# Once the pvc is delete, wait for a minute. 
+kubectl get pvc
+
+# Now check, pv as well as go to the portal and check for the disk. That should also get deleted.
+kubectl get pv
 
 # List Replicasets
 kubectl get po
@@ -86,42 +116,9 @@ kubectl get pv
 kubectl get deploy
 kubectl get ConfigMap
 
-# Get the my sql pod name.
-kubectl get pod mysql-7fc6f84c7b-jkhgh -o wide
-
-kubectl describe pod mysql-7fc6f84c7b-jkhgh
-
-kubectl logs -f mysql-7fc6f84c7b-jkhgh
-
-# Create a new pod to connect to the existing my sql server running inside of cluster pod
-kubectl run -it --rm --image=mysql:5.6 --restart=Never mysql-client -- mysql -h mysql -pdbpassword11
-
-kubectl exec -it mysql-7fc6f84c7b-jkhgh -- mysql -h mysql -pdbpassword11
-
-show schemas # this woould not work. You should put semi colon(;) as well
-
-show schemas;
-
-kubectl delete -f .\kube-manifests\5-01-SC-PVC-ConfigMap-MySQL\
-
-kubectl get pvc
-kubectl get pv
-
-
-# Install Jq(https://stedolan.github.io/jq/, download jq-win64.exe, rename that to jq.exe. Then place it in some folder, add that folder to the path env var)
-# The open a new command prompt and then exectte the following. It should give the external ip
-kubectl get svc myapp-pod-loadbalancer-service -o json | jq '.status.loadBalancer.ingress[].ip'
-
-# Observe that the persitant volume is in released state
-kubectl get pv pvc-8893b875-4eb4-485f-a2f8-ec3ee6376bc8 -o json | jq '.status.phase'
-
-kubectl delete pv pvc-8893b875-4eb4-485f-a2f8-ec3ee6376bc8
-
-# Since the pv is delete, the follwoing command will not give any result. 
-kubectl get pv
+kubectl get all
 
 # But if you go to the UI(portal.azure.com) you can still see the azure disk.
-
 
 ###################################################################################
 # Get all Objects from Kubernetes default namespace
