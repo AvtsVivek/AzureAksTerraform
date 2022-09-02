@@ -131,6 +131,8 @@ kubectl get ns
 # Time to clean up so delete this service.
 kubectl delete service my-helloworld-rs-service
 
+kubectl delete -f .\kube-manifests\
+
 # Once deleted, go to the portal, inside of the resource group aks-tf-trial1-rg-dev-nrg, you should see now only one public ip.
 # The other one should be gone.
 

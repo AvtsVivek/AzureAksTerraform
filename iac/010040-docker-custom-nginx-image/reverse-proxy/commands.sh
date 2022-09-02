@@ -1,5 +1,8 @@
+cd ..
 
 cd ../..
+
+cd ../../..
 
 # cd into the directory.
 cd ./iac/010040-docker-custom-nginx-image/reverse-proxy
