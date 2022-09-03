@@ -87,7 +87,6 @@ kubectl get pvc
 kubectl get pv
 # So is a pv. 
 
-
 # Once the pvc is delete, wait for a minute.
 kubectl get pvc
 
