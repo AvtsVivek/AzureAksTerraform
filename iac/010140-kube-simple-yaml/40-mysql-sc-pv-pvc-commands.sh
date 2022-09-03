@@ -68,10 +68,13 @@ kubectl get all -n default
 
 ###################################################################################
 
+# Ensure that the storageClassName in the below file is managed-premium
 kubectl apply -f .\kube-manifests\5-10-PVC-ConfigMap-MySQL\01-persistent-volume-claim.yml
 
+
 kubectl get pvc
-# A PVC will be created but will be in pending state.
+# A PVC will be created but will be in pending state. Also take a look at portal.azure.com. 
+# You will not see any azure disk yet.
 
 kubectl get pv
 
@@ -88,6 +91,7 @@ kubectl get pvc
 # Notice a pvc is present with Bound Status.
 
 kubectl get pv
+# Now observe that a PV is ready. Also take a look at Azure Portal for Azure disk.
 
 kubectl delete -f .\kube-manifests\5-10-PVC-ConfigMap-MySQL\03-mysql-deployment.yml
 
@@ -118,7 +122,6 @@ kubectl get ConfigMap
 
 kubectl get all
 
-# But if you go to the UI(portal.azure.com) you can still see the azure disk.
 
 ###################################################################################
 # Get all Objects from Kubernetes default namespace

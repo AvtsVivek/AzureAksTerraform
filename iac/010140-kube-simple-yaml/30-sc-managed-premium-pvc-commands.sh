@@ -85,6 +85,7 @@ kubectl get sc -o wide
 
 # kubectl apply -f .\kube-manifests\5-01-PVC-ConfigMap-MySQL\
 
+# Ensure that the storageClassName in the below file is managed-premium
 kubectl apply -f .\kube-manifests\5-02-pvc\01-pvc-managed-premium-WaitForFirstConsumer.yml
 
 # Run the following command, you will see a pvc, but its in pending.
