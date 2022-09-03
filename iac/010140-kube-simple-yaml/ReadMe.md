@@ -4,7 +4,7 @@
 
 - This talks about deployments, a hiher abstraction of replicasets.
 
-- The exercise 5-01-PVC-ConfigMap-MySQL uses system provisioned storage classes.
+- The exercise 5-15-SC-PVC-ConfigMap-MySQL uses system provisioned storage classes.
   - 
 - Storage Class. A storage class in k8s represent storage/disk where data can be stored as required by the applications running in k8s.
   - Using storage class object in k8s, we can configure this storage, such as 

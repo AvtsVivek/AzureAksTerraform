@@ -1,7 +1,5 @@
 cd ../..
 
-# https://github.com/stacksimplify/azure-aks-kubernetes-masterclass/tree/master/05-Azure-Disks-for-AKS-Storage
-
 # cd into the directory.
 cd ./iac/010140-kube-simple-yaml
 
@@ -67,12 +65,13 @@ kubectl get pods -n default
 
 kubectl get all -n default
 
+
 ###################################################################################
-# This uses system provisioned storage classes
-kubectl apply -f .\kube-manifests\5-15-SC-PVC-ConfigMap-MySQL
+
+kubectl apply -f .\kube-manifests\5-20-sustom-storage-PVC-ConfigMap-MySQL
 
 kubectl get pvc
-# A PVC will be created. Take a look at azure portal. A disk will be created. 
+# A PVC will be created but will be in pending state.
 
 kubectl get pv
 kubectl get deploy
@@ -82,17 +81,31 @@ kubectl get pvc
 # Notice a pvc is present with Bound Status.
 
 kubectl get pv
+kubectl get pvc
+# Notice a pvc is still present with Bound Status.
 
-kubectl get all
+kubectl get pv
+# So is a pv. 
 
-# You can connect to the my sql in two ways.
-# 1. Create a new pod to connect to the existing my sql server running inside of cluster pod
+# Once the pvc is delete, wait for a minute.
+kubectl get pvc
+
+# Now check, pv as well as go to the portal and check for the disk.
+kubectl get pv
+
+# List Replicasets
+kubectl get po
+kubectl get svc
+kubectl get sc
+kubectl get pvc
+kubectl get pv
+kubectl get deploy
+kubectl get ConfigMap
+
+# Create a new pod to connect to the existing my sql server running inside of cluster pod
 kubectl run -it --rm --image=mysql:5.6 --restart=Never mysql-client -- mysql -h mysql -pdbpassword11
 
-# Or else, just get into the existing pod.
-# 2. First get the pod name.
-kubectl get po
-kubectl exec -it mysql-7fc6f84c7b-kss8q -- mysql -h mysql -pdbpassword11
+kubectl exec -it mysql-7fc6f84c7b-jkhgh -- mysql -h mysql -pdbpassword11
 
 show schemas # this woould not work. You should put semi colon(;) as well
 
@@ -100,7 +113,7 @@ show schemas;
 
 kubectl get all
 
-kubectl delete -f .\kube-manifests\5-15-SC-PVC-ConfigMap-MySQL
+kubectl delete -f .\kube-manifests\5-20-sustom-storage-PVC-ConfigMap-MySQL
 
 # But if you go to the UI(portal.azure.com) you can still see the azure disk.
 ####################################################################################

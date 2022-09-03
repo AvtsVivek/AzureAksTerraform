@@ -1,5 +1,7 @@
 cd ../..
 
+# https://github.com/stacksimplify/azure-aks-kubernetes-masterclass/tree/master/05-Azure-Disks-for-AKS-Storage
+
 # cd into the directory.
 cd ./iac/010140-kube-simple-yaml
 
