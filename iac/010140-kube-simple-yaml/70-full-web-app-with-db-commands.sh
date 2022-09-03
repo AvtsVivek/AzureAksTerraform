@@ -68,10 +68,10 @@ kubectl get all -n default
 
 ###################################################################################
 
-kubectl apply -f .\kube-manifests\5-20-sustom-storage-PVC-ConfigMap-MySQL
+kubectl apply -f .\kube-manifests\5-30-full-web-app-with-db
 
 kubectl get pvc
-# A PVC will be created but will be in pending state.
+# A PVC will be created but will be in bound state. A disk should now be provisioned.
 
 kubectl get pv
 kubectl get deploy
@@ -79,28 +79,17 @@ kubectl get po
 kubectl get ConfigMap
 kubectl get pvc
 # Notice a pvc is present with Bound Status.
-
-kubectl get pv
-kubectl get pvc
-# Notice a pvc is still present with Bound Status.
-
 kubectl get pv
 # So is a pv. 
 
-# Once the pvc is delete, wait for a minute.
-kubectl get pvc
-
 # Now check, pv as well as go to the portal and check for the disk.
-kubectl get pv
 
-# List Replicasets
+# Get the pod of the web app.
 kubectl get po
-kubectl get svc
-kubectl get sc
-kubectl get pvc
-kubectl get pv
-kubectl get deploy
-kubectl get ConfigMap
+
+kubectl describe pod usermgmt-webapp-6ff7d7d849-5z6ms
+
+kubectl logs -f usermgmt-webapp-6ff7d7d849-5z6ms
 
 # You can connect to the my sql in two ways.
 # 1. Create a new pod to connect to the existing my sql server running inside of cluster pod
@@ -109,7 +98,7 @@ kubectl run -it --rm --image=mysql:5.6 --restart=Never mysql-client -- mysql -h 
 # Or else, just get into the existing pod.
 # 2. First get the pod name.
 kubectl get po
-kubectl exec -it mysql-7fc6f84c7b-jkhgh -- mysql -h mysql -pdbpassword11
+kubectl exec -it mysql-7fc6f84c7b-7wnl4 -- mysql -h mysql -pdbpassword11
 
 show schemas # this woould not work. You should put semi colon(;) as well
 
@@ -117,7 +106,41 @@ show schemas;
 
 kubectl get all
 
-kubectl delete -f .\kube-manifests\5-20-sustom-storage-PVC-ConfigMap-MySQL
+# Run the following ommand and get the EXTERNAL-IP of the usermgmt-webapp-service web app.
+kubectl get svc
+
+# Next browse to 
+# http://<EXTERNAL-IP>/login
+# Now login with admin101 and password101
+
+kubectl exec -it mysql-7fc6f84c7b-7wnl4 -- mysql -h mysql -pdbpassword11
+show schemas;
+use webappdb;
+show tables;
+select * FROM user;
+select * FROM user_role;
+
+kubectl delete -f .\kube-manifests\5-30-full-web-app-with-db
+
+# Now since the data is persisted to the azure disk, the data must not be lost. 
+# So run the application again. 
+kubectl apply -f .\kube-manifests\5-30-full-web-app-with-db
+
+# Get the sql db pod name
+kubectl get po
+
+# Next get into the pod to verify the users you created earlier exist.
+kubectl exec -it mysql-7fc6f84c7b-d8h85 -- mysql -h mysql -pdbpassword11
+show schemas;
+use webappdb;
+show tables;
+select * FROM user;
+select * FROM user_role;
+
+# Not sure why the data is not persisteing. Probalby, the database is bering created everytime. when the pod is getting created. Not sure.
+
+
+
 
 # But if you go to the UI(portal.azure.com) you can still see the azure disk.
 ####################################################################################
