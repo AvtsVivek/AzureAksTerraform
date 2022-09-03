@@ -4,7 +4,7 @@
 # 3. Azure AKS Environment Name (Dev, QA, Prod)
 
 # Azure Location
-variable "location" {
+variable "resource_group_location" {
   type        = string
   description = "Azure Region where all these resources will be provisioned"
   default     = "Central India"

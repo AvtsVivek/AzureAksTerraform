@@ -1,7 +1,7 @@
 cd ../..
 
 # cd into the directory.
-cd ./iac/010140-kube-simple-yaml
+cd ./iac/010160-kube-ms-sql-external
 
 terraform fmt
 
@@ -10,6 +10,8 @@ terraform init
 terraform validate
 
 terraform plan -out main.tfplan
+
+terraform plan -var-file="secrets.tfvars" -out main.tfplan
 
 # terraform show main.tfplan
 
@@ -161,7 +163,7 @@ kubectl get all
 
 ###################################################################################
 
-terraform plan -destroy -out main.destroy.tfplan
+terraform plan -destroy -out main.destroy.tfplan -var-file="secrets.tfvars"
 
 # terraform show main.destroy.tfplan
 
