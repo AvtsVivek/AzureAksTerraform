@@ -76,11 +76,7 @@ kubectl get all -n default
 
 ###################################################################################
 
-kubectl apply -f .\kube-manifests\1-external-service\01-kube-base-definition.yml
-
-kubectl apply -f .\kube-manifests\
-
-kubectl delete -f .\kube-manifests\
+kubectl apply -f .\kube-manifests\01-mysql-external-service.yml
 
 kubectl get svc
 
@@ -109,6 +105,9 @@ mysql> exit
 kubectl get po -o wide
 
 kubectl logs -f usermgmt-webapp-7554f95784-7rp78
+
+kubectl delete -f .\kube-manifests\
+
 
 ###################################################################################
 

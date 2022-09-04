@@ -4,7 +4,7 @@ metadata:
   name: mysql
 spec:
   type: ExternalName
-  externalName: myaksmysqldemoserver.mysql.database.azure.com
+  externalName: server203295989.mysql.database.azure.com
                #vivek-hr-dev-vivek-mysql.mysql.database.azure.com
 
   ports:

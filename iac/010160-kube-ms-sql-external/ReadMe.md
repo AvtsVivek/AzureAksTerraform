@@ -25,3 +25,8 @@ az mysql server vnet-rule create -g myAKSMySQLResourceGroup -s myaksmysqldemoser
 az aks get-credentials --resource-group myAKSMySQLResourceGroup --name myAKSMySQLCluster --overwrite-existing
 
 kubectl run -it --rm --image=mysql:5.7.22 --restart=Never mysql-client -- mysql -h myaksmysqldemoserver.mysql.database.azure.com -u myadmin@myaksmysqldemoserver -p H@Sh1CoR3!
+
+
+# Now trying this.
+
+https://docs.microsoft.com/en-us/azure/mysql/flexible-server/tutorial-deploy-wordpress-on-aks
