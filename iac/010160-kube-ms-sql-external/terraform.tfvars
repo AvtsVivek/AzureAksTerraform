@@ -1,6 +1,6 @@
 
-resource_group_name     = "vivek-rg"
-resource_group_location = "southindia"
+resource_group_name     = "aks-tf-trial1-rg"
+resource_group_location = "Central India"
 
 # DB Variables
 db_name              = "vivek-mysql"

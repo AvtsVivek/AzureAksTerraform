@@ -1,28 +1,27 @@
 ## Aks cluster without Ad integration.
 
-- This is exactly [ame as the previous one](https://github.com/AvtsVivek/AzureAksTerraform/tree/main/iac/010080-kube-replica-sets) 
+# Tried the following as well, but did not work.
 
-- This talks about deployments, a hiher abstraction of replicasets.
+az group create --name myAKSMySQLResourceGroup --location westeurope
 
-- The exercise 5-15-SC-PVC-ConfigMap-MySQL uses system provisioned storage classes.
-  - 
-- Storage Class. A storage class in k8s represent storage/disk where data can be stored as required by the applications running in k8s.
-  - Using storage class object in k8s, we can configure this storage, such as 
-    - provisioner: kubernetes.io/azure-disk
-    - reclaimPolicy: Retain  # Default is Delete, recommended is retain
-    - volumeBindingMode: WaitForFirstConsumer # Default is Immediate, recommended is WaitForFirstConsumer
-    - allowVolumeExpansion: true  
-    - parameters:
-    - storageaccounttype: Premium_LRS # or we can use Standard_LRS
-    - kind: managed # Default is shared (Other two are managed and dedicated)
-- Persistant Volume Claim. 
-  - Its like a requisition for a strorage. 
-  - By this object, we state the need for a pirticular type of storage. 
-  - This may get fulfilled, or this may not get fulfilled if not available.
-  - It is here we state what type of storage class we need by specifying storage class.
-    - storageClassName: managed-premium-retain-sc
-- Persistant Volume
-  - Its the object that represents the provisioned strorage by k8s.
-  - So the developer expresses his requirement using Persistant Volume Claim(not by Persistant Volume pv)
-  - And when it is fullfilled, it appears as Persistant Volume, pv. So when a **PVC** is fullfilled, it appears as **PV**
-  - 
+az acr create --resource-group myAKSMySQLResourceGroup --name vivekaksmysqlacr --sku Basic
+
+az acr show --name vivekaksmysqlacr
+
+az aks create --resource-group myAKSMySQLResourceGroup --name myAKSMySQLCluster --vm-set-type VirtualMachineScaleSets --nodepool-name noaccpool --node-count 1 --node-vm-size Standard_D2s_v3 --generate-ssh-keys --attach-acr vivekaksmysqlacr --load-balancer-sku standard
+
+az aks nodepool add --resource-group myAKSMySQLResourceGroup --cluster-name myAKSMySQLCluster --name accpool --node-count 1 --node-vm-size Standard_DS2_v2
+
+az vmss list -g MC_myAKSMySQLResourceGroup_myAKSMySQLCluster_westeurope -o table
+
+az mysql server create --resource-group myAKSMySQLResourceGroup --name myaksmysqldemoserver  --location westeurope --admin-user myadmin --admin-password H@Sh1CoR3! --sku-name GP_Gen5_2
+
+az network vnet show -g MC_myAKSMySQLResourceGroup_myAKSMySQLCluster_westeurope --name aks-vnet-16903398
+
+az network vnet subnet update -n aks-subnet --vnet-name aks-vnet-16903398 -g MC_myAKSMySQLResourceGroup_myAKSMySQLCluster_westeurope --service-endpoints Microsoft.SQL
+
+az mysql server vnet-rule create -g myAKSMySQLResourceGroup -s myaksmysqldemoserver -n vnetRuleName --subnet /subscriptions/{YourSubscriptionId}/resourceGroups/MC_myAKSMySQLResourceGroup_myAKSMySQLCluster_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-16903398/subnets/aks-subnet
+
+az aks get-credentials --resource-group myAKSMySQLResourceGroup --name myAKSMySQLCluster --overwrite-existing
+
+kubectl run -it --rm --image=mysql:5.7.22 --restart=Never mysql-client -- mysql -h myaksmysqldemoserver.mysql.database.azure.com -u myadmin@myaksmysqldemoserver -p H@Sh1CoR3!

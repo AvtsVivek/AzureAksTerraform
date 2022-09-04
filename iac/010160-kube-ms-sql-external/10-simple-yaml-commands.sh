@@ -1,5 +1,10 @@
 cd ../..
 
+# https://github.com/stacksimplify/azure-aks-kubernetes-masterclass/tree/master/06-Azure-MySQL-for-AKS-Storage
+
+# https://github.com/RicardoNiepel/azure-mysql-in-aks-sample
+
+
 # cd into the directory.
 cd ./iac/010160-kube-ms-sql-external
 
@@ -8,8 +13,6 @@ terraform fmt
 terraform init
 
 terraform validate
-
-terraform plan -out main.tfplan
 
 terraform plan -var-file="secrets.tfvars" -out main.tfplan
 
@@ -73,82 +76,28 @@ kubectl get all -n default
 
 ###################################################################################
 
-kubectl apply -f .\kube-manifests\1-pod\
+kubectl apply -f .\kube-manifests\1-external-service\01-kube-base-definition.yml
 
-# Or individually 
-kubectl apply -f .\kube-manifests\1-pod\02-pod-definition.yml
-kubectl apply -f .\kube-manifests\1-pod\03-pod-lb-service.yml
+kubectl delete -f .\kube-manifests\1-external-service\01-kube-base-definition.yml
 
-# List Replicasets
-kubectl get po
 kubectl get svc
 
-kubectl get svc -o json
+# Replace Host Name of Azure MySQL Database and Username and Password
+# db_username = "mydbadmin"
+# db_password = "H@Sh1CoR3!"
+kubectl run -it --rm --image=mysql:5.7.22 --restart=Never mysql-client -- mysql -h vivek-hr-dev-vivek-mysql.mysql.database.azure.com -u mydbadmin@vivek-hr-dev-vivek-mysql -p H@Sh1CoR3!
 
-# Install Jq(https://stedolan.github.io/jq/, download jq-win64.exe, rename that to jq.exe. Then place it in some folder, add that folder to the path env var)
-# The open a new command prompt and then exectte the following. It should give the external ip
-kubectl get svc myapp-pod-loadbalancer-service -o json | jq '.status.loadBalancer.ingress[].ip'
+kubectl run -it --rm --image=mysql:5.7.22 --restart=Never mysql-client -- mysql -h temp-mysql-vivek.mysql.database.azure.com -u mydbadmin -p H@Sh1CoR3!
 
-kubectl delete -f .\kube-manifests\1-pod-service\
+
+kubectl run -it --rm --image=mysql:5.7.22 -- /bin/bash
+
+mysql> show schemas;
+mysql> create database webappdb;
+mysql> show schemas;
+mysql> exit
 
 ###################################################################################
-
-kubectl apply -f .\kube-manifests\2-replica-set\
-
-# Or individually 
-kubectl apply -f .\kube-manifests\2-replica-set\02-replicaset-definition.yml
-kubectl apply -f .\kube-manifests\2-replica-set\03-replicaset-lb-service.yml
-
-kubectl get po
-kubectl get svc
-kubectl get rs
-
-# Install Jq(https://stedolan.github.io/jq/, download jq-win64.exe, rename that to jq.exe. Then place it in some folder, add that folder to the path env var)
-# The open a new command prompt and then exectte the following. It should give the external ip
-kubectl get svc replicaset-loadbalancer-service -o json | jq '.status.loadBalancer.ingress[].ip'
-
-# Now browse to that External IP
-
-kubectl delete -f .\kube-manifests\2-replica-set\
-
-###################################################################################
-
-kubectl apply -f .\kube-manifests\3-deployment\
-
-# Or individually 
-kubectl apply -f .\kube-manifests\3-deployment\02-deployment-definition.yml
-kubectl apply -f .\kube-manifests\3-deployment\03-deployment-lb-service.yml
-
-kubectl get po
-kubectl get deploy
-kubectl get svc
-kubectl get rs
-
-# Install Jq(https://stedolan.github.io/jq/, download jq-win64.exe, rename that to jq.exe. Then place it in some folder, add that folder to the path env var)
-# The open a new command prompt and then exectte the following. It should give the external ip
-kubectl get svc deployment-loadbalancer-service -o json | jq '.status.loadBalancer.ingress[].ip'
-
-# Now browse to that External IP
-
-kubectl delete -f .\kube-manifests\3-deployment\
-
-###################################################################################
-
-kubectl apply -f .\kube-manifests\4-service\
-
-kubectl apply -f .\kube-manifests\4-service\2-backend-deployment.yml
-kubectl apply -f .\kube-manifests\4-service\3-backend-clusterip-service.yml
-kubectl apply -f .\kube-manifests\4-service\4-frontend-deployment.yml
-kubectl apply -f .\kube-manifests\4-service\5-frontend-LoadBalancer-service.yml
-
-kubectl get po
-kubectl get deploy
-kubectl get svc
-kubectl get rs
-
-# Install Jq(https://stedolan.github.io/jq/, download jq-win64.exe, rename that to jq.exe. Then place it in some folder, add that folder to the path env var)
-# The open a new command prompt and then exectte the following. It should give the external ip
-kubectl get svc frontend-nginxapp-loadbalancer-service -o json | jq '.status.loadBalancer.ingress[].ip'
 
 # Now browse to that External IP
 http://<EXTERNAL-IP>
