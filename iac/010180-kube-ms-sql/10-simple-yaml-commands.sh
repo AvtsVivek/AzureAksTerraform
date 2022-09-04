@@ -4,9 +4,8 @@ cd ../..
 
 # https://github.com/RicardoNiepel/azure-mysql-in-aks-sample
 
-
 # cd into the directory.
-cd ./iac/010160-kube-ms-sql-external
+cd ./iac/010180-kube-ms-sql
 
 terraform fmt
 
@@ -46,8 +45,6 @@ az aks show --resource-group aks-tf-trial1-rg-dev --name aks-tf-trial1-rg-dev-ak
 
 kubectl cluster-info
 
-az aks nodepool list
-
 az aks nodepool list --resource-group aks-tf-trial1-rg-dev --cluster-name aks-tf-trial1-rg-dev-aks-cluster -o table
 
 kubectl get pod -o=custom-columns=NODE-NAME:.spec.nodeName,POD-NAME:.metadata.name -n kube-system
@@ -76,50 +73,28 @@ kubectl get all -n default
 
 ###################################################################################
 
-kubectl apply -f .\kube-manifests\01-mysql-external-service.yml
+# kubectl apply -f .\kube-manifests\01-mysql-external-service.yml
 
-kubectl get svc
+# kubectl get svc
 
-kubectl describe svc mysql
+# kubectl describe svc mysql
 
-kubectl run -it --rm --image=mysql:5.7.22 --restart=Never mysql-client -- mysql -h vivek-hr-dev-vivek-mysql.mysql.database.azure.com -u mydbadmin@vivek-hr-dev-vivek-mysql -p Hare@123
+kubectl run -it --rm --image=mcr.microsoft.com/mssql-tools --restart=Never mssql-client 
 
-kubectl delete -f .\kube-manifests\1-external-service\01-kube-base-definition.yml
+sqlcmd -S hr-dev-ms-sql-server.database.windows.net -U adm1n157r470r -P 4-v3ry-53cr37-p455w0rd
 
-kubectl get svc
+select name from sys.databases
 
-# Replace Host Name of Azure MySQL Database and Username and Password
-# db_username = "mydbadmin"
-# db_password = "H@Sh1CoR3!"
-kubectl run -it --rm --image=mysql:5.7.22 --restart=Never mysql-client -- mysql -h vivek-hr-dev-vivek-mysql.mysql.database.azure.com -u mydbadmin@vivek-hr-dev-vivek-mysql -p H@Sh1CoR3!
+GO
 
-kubectl run -it --rm --image=mysql:5.7.22 --restart=Never mysql-client -- mysql -h temp-mysql-vivek.mysql.database.azure.com -u mydbadmin -p H@Sh1CoR3!
+Ctrl + C
 
-kubectl run -it --rm --image=mysql:5.7.22 -- /bin/bash
+exit
 
-mysql> show schemas;
-mysql> create database webappdb;
-mysql> show schemas;
-mysql> exit
-
-kubectl get po -o wide
-
-kubectl logs -f usermgmt-webapp-7554f95784-7rp78
-
-kubectl delete -f .\kube-manifests\
-
+# kubectl run -it --rm --image=mcr.microsoft.com/mssql-tools --restart=Never mssql-client sqlcmd -S hr-dev-ms-sql-server.database.windows.net -U adm1n157r470r -P 4-v3ry-53cr37-p455w0rd -Q 'select name from sys.databases'
 
 ###################################################################################
 
-# Now browse to that External IP
-http://<EXTERNAL-IP>
-http://<EXTERNAL-IP>/hello
-
-kubectl delete -f .\kube-manifests\4-service\
-
-###################################################################################
-
-# Get all Objects from Kubernetes default namespace
 kubectl get all
 
 ###################################################################################

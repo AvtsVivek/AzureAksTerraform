@@ -5,8 +5,8 @@ resource "azurerm_mssql_server" "mssql_server" {
   resource_group_name          = azurerm_resource_group.aks_rg.name
   location                     = azurerm_resource_group.aks_rg.location
   version                      = "12.0"
-  administrator_login          = "adm1n157r470r"
-  administrator_login_password = "4-v3ry-53cr37-p455w0rd"
+  administrator_login          = var.db_username
+  administrator_login_password = var.db_password
 }
 
 resource "azurerm_mssql_database" "mssql_database" {
@@ -20,4 +20,11 @@ resource "azurerm_mssql_database" "mssql_database" {
   zone_redundant = false
 
   tags = local.common_tags
+}
+
+resource "azurerm_mssql_firewall_rule" "allow_azure_access" {
+  name             = "Allow_access_to_Azure_services"
+  server_id        = azurerm_mssql_server.mssql_server.id
+  start_ip_address = "0.0.0.0"
+  end_ip_address   = "0.0.0.0"
 }

@@ -17,13 +17,12 @@ variable "resource_group_name" {
   default     = "aks-tf-trial1-rg"
 }
 
-# Azure AKS Environment Name
+# Environment Name
 variable "environment" {
   type        = string
   description = "This variable defines the Environment"
   default     = "dev"
 }
-
 
 # AKS Input Variables
 
@@ -88,4 +87,35 @@ variable "mssql_database_name" {
   description = "Ms Sql Database Name "
   type        = string
   default     = "ms-sql-db"
+}
+
+variable "business_divsion" {
+  description = "Business Division in the large organization this Infrastructure belongs"
+  type        = string
+  default     = "sap"
+}
+
+
+# Define Local Values in Terraform
+locals {
+  owners               = var.business_divsion
+  environment          = var.environment
+  resource_name_prefix = "${var.business_divsion}-${var.environment}"
+  #name = "${local.owners}-${local.environment}"
+  common_tags = {
+    owners      = local.owners
+    environment = local.environment
+  }
+}
+
+variable "db_username" {
+  description = "Azure MySQL Database Administrator Username"
+  type        = string
+  sensitive   = true
+}
+# 8. Azure MySQL DB Password (Variable Type: Sensitive String)
+variable "db_password" {
+  description = "Azure MySQL Database Administrator Password"
+  type        = string
+  sensitive   = true
 }
