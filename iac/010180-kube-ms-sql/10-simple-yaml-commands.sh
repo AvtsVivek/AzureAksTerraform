@@ -82,15 +82,40 @@ kubectl get svc
 
 kubectl describe svc mysql
 
-kubectl run -it --rm --image=mysql:5.7.22 --restart=Never mysql-client -- mysql -h vivek-hr-dev-vivek-mysql.mysql.database.azure.com -u mydbadmin@vivek-hr-dev-vivek-mysql -p H@Sh1CoR3!
+kubectl run -it --rm --image=mysql:5.7.22 --restart=Never mysql-client -- mysql -h vivek-hr-dev-vivek-mysql.mysql.database.azure.com -u mydbadmin@vivek-hr-dev-vivek-mysql -p Hare@123
 
 kubectl delete -f .\kube-manifests\1-external-service\01-kube-base-definition.yml
 
 kubectl get svc
 
+# Replace Host Name of Azure MySQL Database and Username and Password
+# db_username = "mydbadmin"
+# db_password = "H@Sh1CoR3!"
+kubectl run -it --rm --image=mysql:5.7.22 --restart=Never mysql-client -- mysql -h vivek-hr-dev-vivek-mysql.mysql.database.azure.com -u mydbadmin@vivek-hr-dev-vivek-mysql -p H@Sh1CoR3!
+
+kubectl run -it --rm --image=mysql:5.7.22 --restart=Never mysql-client -- mysql -h temp-mysql-vivek.mysql.database.azure.com -u mydbadmin -p H@Sh1CoR3!
+
+kubectl run -it --rm --image=mysql:5.7.22 -- /bin/bash
+
+mysql> show schemas;
+mysql> create database webappdb;
+mysql> show schemas;
+mysql> exit
+
+kubectl get po -o wide
+
+kubectl logs -f usermgmt-webapp-7554f95784-7rp78
+
 kubectl delete -f .\kube-manifests\
 
-kubectl get svc
+
+###################################################################################
+
+# Now browse to that External IP
+http://<EXTERNAL-IP>
+http://<EXTERNAL-IP>/hello
+
+kubectl delete -f .\kube-manifests\4-service\
 
 ###################################################################################
 

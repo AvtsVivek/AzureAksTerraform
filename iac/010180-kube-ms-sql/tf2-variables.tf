@@ -1,0 +1,91 @@
+# Define Input Variables
+# 1. Azure Location (CentralUS)
+# 2. Azure Resource Group Name 
+# 3. Azure AKS Environment Name (Dev, QA, Prod)
+
+# Azure Location
+variable "resource_group_location" {
+  type        = string
+  description = "Azure Region where all these resources will be provisioned"
+  default     = "Central India"
+}
+
+# Azure Resource Group Name
+variable "resource_group_name" {
+  type        = string
+  description = "This variable defines the Resource Group"
+  default     = "aks-tf-trial1-rg"
+}
+
+# Azure AKS Environment Name
+variable "environment" {
+  type        = string
+  description = "This variable defines the Environment"
+  default     = "dev"
+}
+
+
+# AKS Input Variables
+
+# SSH Public Key for Linux VMs
+variable "ssh_public_key" {
+  default = "~/.ssh/aks-prod-sshkeys/aksprodsshkey.pub"
+  # C:\Users\msi\.ssh\aks-prod-sshkeys
+  description = "This variable defines the SSH Public Key for Linux k8s Worker nodes"
+}
+
+# Windows Admin Username for k8s worker nodes
+variable "windows_admin_username" {
+  type        = string
+  default     = "azureuser"
+  description = "This variable defines the Windows admin username k8s Worker nodes"
+}
+
+# Windows Admin Password for k8s worker nodes
+variable "windows_admin_password" {
+  type        = string
+  default     = "P@ssw0rd123456"
+  description = "This variable defines the Windows admin password k8s Worker nodes"
+}
+
+#################################################################################################
+
+
+# Input Variables
+
+# 1. Business Unit Name
+variable "business_unit" {
+  description = "Business Unit Name"
+  type        = string
+  default     = "vivek-hr"
+}
+
+# 5. Common Tags
+variable "common_tags" {
+  description = "Common Tags for Azure Resources"
+  type        = map(string)
+  default = {
+    "CLITool" = "Terraform"
+    "Tag1"    = "Azure"
+  }
+}
+
+## service plan name
+
+# variable "storage_account_name" {
+#   description = "Storage account for Sql Server db"
+#   type        = string
+#   default     = "mssqlstorageaccount"
+# }
+
+variable "mssql_server_name" {
+  description = "Ms Sql server name"
+  type        = string
+  default     = "ms-sql-server"
+}
+
+variable "mssql_database_name" {
+  description = "Ms Sql Database Name "
+  type        = string
+  default     = "ms-sql-db"
+}
