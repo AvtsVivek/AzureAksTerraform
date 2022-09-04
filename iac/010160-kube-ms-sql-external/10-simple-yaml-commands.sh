@@ -78,6 +78,16 @@ kubectl get all -n default
 
 kubectl apply -f .\kube-manifests\1-external-service\01-kube-base-definition.yml
 
+kubectl apply -f .\kube-manifests\
+
+kubectl delete -f .\kube-manifests\
+
+kubectl get svc
+
+kubectl describe svc mysql
+
+kubectl run -it --rm --image=mysql:5.7.22 --restart=Never mysql-client -- mysql -h vivek-hr-dev-vivek-mysql.mysql.database.azure.com -u mydbadmin@vivek-hr-dev-vivek-mysql -p Hare@123
+
 kubectl delete -f .\kube-manifests\1-external-service\01-kube-base-definition.yml
 
 kubectl get svc
@@ -89,13 +99,16 @@ kubectl run -it --rm --image=mysql:5.7.22 --restart=Never mysql-client -- mysql 
 
 kubectl run -it --rm --image=mysql:5.7.22 --restart=Never mysql-client -- mysql -h temp-mysql-vivek.mysql.database.azure.com -u mydbadmin -p H@Sh1CoR3!
 
-
 kubectl run -it --rm --image=mysql:5.7.22 -- /bin/bash
 
 mysql> show schemas;
 mysql> create database webappdb;
 mysql> show schemas;
 mysql> exit
+
+kubectl get po -o wide
+
+kubectl logs -f usermgmt-webapp-7554f95784-7rp78
 
 ###################################################################################
 
