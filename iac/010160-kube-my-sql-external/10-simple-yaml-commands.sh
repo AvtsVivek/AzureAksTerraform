@@ -4,9 +4,8 @@ cd ../..
 
 # https://github.com/RicardoNiepel/azure-mysql-in-aks-sample
 
-
 # cd into the directory.
-cd ./iac/010160-kube-ms-sql-external
+cd ./iac/010160-kube-my-sql-external
 
 terraform fmt
 
