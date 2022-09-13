@@ -28,6 +28,8 @@ kubectl cluster-info
 
 az aks get-credentials --resource-group aks-tf-trial1-rg-dev --name aks-tf-trial1-rg-dev-aks-cluster --overwrite-existing
 
+az aks get-credentials --resource-group aks-tf-trial1-rg-dev --name aks-tf-trial1-rg-dev-aks-cluster --overwrite-existing --admin
+
 kubectl cluster-info
 
 # If you want to logout or unset, use the following.
@@ -87,7 +89,7 @@ kubectl get svc -o json
 # The open a new command prompt and then exectte the following. It should give the external ip
 kubectl get svc myapp-pod-loadbalancer-service -o json | jq '.status.loadBalancer.ingress[].ip'
 
-kubectl delete -f .\kube-manifests\1-pod-service\
+kubectl delete -f .\kube-manifests\1-pod\
 
 ###################################################################################
 
