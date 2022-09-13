@@ -1,6 +1,6 @@
 # Using Terraform
 
-- Deploys a k8s cluster on Azure
+- Deploys a k8s cluster on Azure, then delploys simple web app on to it using kube manifists
 
 - Step 1
 ![Step 1](./images/1_AzureAksManagedIds.jpg)
