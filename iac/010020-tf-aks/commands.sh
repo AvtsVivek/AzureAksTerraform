@@ -28,7 +28,7 @@ az aks get-credentials --resource-group aks-tf-trial1-rg-dev --name aks-tf-trial
 
 az aks get-credentials --resource-group aks-tf-trial1-rg-dev --name aks-tf-trial1-rg-dev-aks-cluster
 
-az aks get-credentials --resource-group aks-tf-trial1-rg-dev --name aks-tf-trial1-rg-dev-aks-cluster --overwrite-existing
+az aks get-credentials --resource-group aks-tf-trial1-rg-dev --name aks-tf-trial1-rg-dev-aks-cluster --overwrite-existing --admin
 
 kubectl cluster-info
 
@@ -46,6 +46,8 @@ az aks show --resource-group aks-tf-trial1-rg-dev --name aks-tf-trial1-rg-dev-ak
 kubectl cluster-info
 
 az aks nodepool list
+
+# The above gives error, so use the following.
 
 az aks nodepool list --resource-group aks-tf-trial1-rg-dev --cluster-name aks-tf-trial1-rg-dev-aks-cluster -o table
 
@@ -93,9 +95,9 @@ kubectl get pods
 
 # From the output of the above command, the pod id and put in the following commands.
 
-kubectl logs -f app1-nginx-deployment-654599dd66-fxkl9
+kubectl logs -f myapp1-deployment-78bc6985f7-fzjxx
 
-kubectl describe pod app1-nginx-deployment-654599dd66-fxkl9
+kubectl describe pod myapp1-deployment-78bc6985f7-fzjxx
 
 kubectl get deployment 
 
