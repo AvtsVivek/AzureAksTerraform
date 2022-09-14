@@ -6,8 +6,8 @@
 
 - The exercise 5-15-SC-PVC-ConfigMap-MySQL uses system provisioned storage classes.
   - 
-- Storage Class. A storage class in k8s represent storage/disk where data can be stored as required by the applications running in k8s.
-  - Using storage class object in k8s, we can configure this storage, such as 
+- Storage Class. A storage class in k8s represents storage/disk where data can be stored as required by the applications running in k8s.
+  - Using storage class object in k8s, we can configure this storage with parameters, such as 
     - provisioner: kubernetes.io/azure-disk
     - reclaimPolicy: Retain  # Default is Delete, recommended is retain
     - volumeBindingMode: WaitForFirstConsumer # Default is Immediate, recommended is WaitForFirstConsumer
@@ -17,7 +17,7 @@
     - kind: managed # Default is shared (Other two are managed and dedicated)
 - Persistant Volume Claim. 
   - Its like a requisition for a strorage. 
-  - By this object, we state the need for a pirticular type of storage. 
+  - By this object, we state the need for a pirticular type of storage which is needed for the app to run. 
   - This may get fulfilled, or this may not get fulfilled if not available.
   - It is here we state what type of storage class we need by specifying storage class.
     - storageClassName: managed-premium-retain-sc

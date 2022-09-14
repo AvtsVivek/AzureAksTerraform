@@ -94,6 +94,9 @@ kubectl apply -f .\kube-manifests\5-01-pvc\01-pvc-azurefile-premium-immediate.ym
 # So since the storage class is storageClassName: azurefile-premium, its immediate.
 kubectl get pvc
 # since the storage class is storageClassName: azurefile-premium, its immediate, a pv is also ready.
+# Immediate here means the following.
+# Once the k8s config files are deployed, k8s immediately starts and tries to fullfill the claim.
+# See the images 1-AzurefileStorage-pvc1.jpg, 1-AzurefileStorage-pvc2.jpg and 1-AzurefileStorage-pvc3.jpg
 kubectl get pv
 
 kubectl delete -f .\kube-manifests\5-01-pvc\01-pvc-azurefile-premium-immediate.yml
