@@ -87,9 +87,9 @@ kubectl get pv
 # Get the pod of the web app.
 kubectl get po
 
-kubectl describe pod usermgmt-webapp-6ff7d7d849-5z6ms
+kubectl describe pod usermgmt-webapp-6ff7d7d849-p66qd
 
-kubectl logs -f usermgmt-webapp-6ff7d7d849-5z6ms
+kubectl logs -f usermgmt-webapp-6ff7d7d849-p66qd
 
 # You can connect to the my sql in two ways.
 # 1. Create a new pod to connect to the existing my sql server running inside of cluster pod
@@ -98,7 +98,7 @@ kubectl run -it --rm --image=mysql:5.6 --restart=Never mysql-client -- mysql -h 
 # Or else, just get into the existing pod.
 # 2. First get the pod name.
 kubectl get po
-kubectl exec -it mysql-7fc6f84c7b-7wnl4 -- mysql -h mysql -pdbpassword11
+kubectl exec -it mysql-7fc6f84c7b-6fgvm -- mysql -h mysql -pdbpassword11
 
 show schemas # this woould not work. You should put semi colon(;) as well
 
@@ -138,8 +138,6 @@ select * FROM user;
 select * FROM user_role;
 
 # Not sure why the data is not persisteing. Probalby, the database is bering created everytime. when the pod is getting created. Not sure.
-
-
 
 
 # But if you go to the UI(portal.azure.com) you can still see the azure disk.

@@ -47,6 +47,8 @@ az aks nodepool list --resource-group aks-tf-trial1-rg-dev --cluster-name aks-tf
 
 kubectl get pod -o=custom-columns=NODE-NAME:.spec.nodeName,POD-NAME:.metadata.name -n kube-system
 
+kubectl get pod -o custom-columns=NODE-NAME:.spec.nodeName,POD-NAME:.metadata.name -n kube-system
+
 # The following should show msi(managed system identity)
 az aks show --resource-group aks-tf-trial1-rg-dev --name aks-tf-trial1-rg-dev-aks-cluster --query servicePrincipalProfile
 
@@ -87,9 +89,6 @@ kubectl get pvc
 kubectl get pv
 # So is a pv. 
 
-# Once the pvc is delete, wait for a minute.
-kubectl get pvc
-
 # Now check, pv as well as go to the portal and check for the disk.
 kubectl get pv
 
@@ -109,7 +108,7 @@ kubectl run -it --rm --image=mysql:5.6 --restart=Never mysql-client -- mysql -h 
 # Or else, just get into the existing pod.
 # 2. First get the pod name.
 kubectl get po
-kubectl exec -it mysql-7fc6f84c7b-jkhgh -- mysql -h mysql -pdbpassword11
+kubectl exec -it mysql-7fc6f84c7b-pmmw9 -- mysql -h mysql -pdbpassword11
 
 show schemas # this woould not work. You should put semi colon(;) as well
 
