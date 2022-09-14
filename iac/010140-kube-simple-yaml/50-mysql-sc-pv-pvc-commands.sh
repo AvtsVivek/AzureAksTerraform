@@ -92,11 +92,13 @@ kubectl run -it --rm --image=mysql:5.6 --restart=Never mysql-client -- mysql -h 
 # Or else, just get into the existing pod.
 # 2. First get the pod name.
 kubectl get po
-kubectl exec -it mysql-7fc6f84c7b-kss8q -- mysql -h mysql -pdbpassword11
+kubectl exec -it mysql-7fc6f84c7b-m7zt9 -- mysql -h mysql -pdbpassword11
 
 show schemas # this woould not work. You should put semi colon(;) as well
 
 show schemas;
+
+exit
 
 kubectl get all
 

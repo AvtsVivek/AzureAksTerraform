@@ -47,7 +47,7 @@ az aks nodepool list
 
 az aks nodepool list --resource-group aks-tf-trial1-rg-dev --cluster-name aks-tf-trial1-rg-dev-aks-cluster -o table
 
-kubectl get pod -o=custom-columns=NODE-NAME:.spec.nodeName,POD-NAME:.metadata.name -n kube-system
+kubectl get pod -o custom-columns=NODE-NAME:.spec.nodeName,POD-NAME:.metadata.name -n kube-system
 
 # The following should show msi(managed system identity)
 az aks show --resource-group aks-tf-trial1-rg-dev --name aks-tf-trial1-rg-dev-aks-cluster --query servicePrincipalProfile
@@ -93,12 +93,17 @@ kubectl apply -f .\kube-manifests\5-02-pvc\01-pvc-managed-premium-WaitForFirstCo
 # Run the following command, you will see a pvc, but its in pending.
 # Its pending, because the storageClassName is managed-premium, and its VOLUMEBINDINGMODE is WaitForFirstConsumer.
 # So till the first consumer is ready, pvc status is pending.
+# And this will remain pending till there is a customer. 
 kubectl get pvc
 # There is no pv yet, run the following command and see.
+# Also take a look at portal.azure.com. You will not see any azure disk yet.
 # This is because, the storageClassName for the pvc is set to managed-premium. See the file 01-persistent-volume-claim.yml
 kubectl get pv
 
 kubectl delete -f .\kube-manifests\5-02-pvc\01-pvc-managed-premium-WaitForFirstConsumer.yml
+
+# Now check, there will be no pvc, since it is delete.
+kubectl get pvc
 
 # List Replicasets
 kubectl get po

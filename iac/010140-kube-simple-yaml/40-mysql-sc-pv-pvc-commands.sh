@@ -111,6 +111,7 @@ kubectl delete -f .\kube-manifests\5-10-PVC-ConfigMap-MySQL\01-persistent-volume
 kubectl get pvc
 
 # Now check, pv as well as go to the portal and check for the disk. That should also get deleted.
+# Wait for a couple of minutes and see the portal.azure.com
 kubectl get pv
 
 # List Replicasets

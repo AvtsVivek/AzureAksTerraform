@@ -1,3 +1,12 @@
+# A ConfigMap is an API object used to store non-confidential data in key-value pairs. 
+# Pods can consume ConfigMaps as environment variables, 
+# command-line arguments, or as configuration files in a volume.
+
+# https://kubernetes.io/docs/concepts/configuration/configmap/#configmap-object
+
+# ConfigMaps are different from Secrets.
+# So you cannot expect confidentiality, encription etc.
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
